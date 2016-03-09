@@ -12,24 +12,31 @@
             <ColumnDefinition Width="Auto"/>
             <ColumnDefinition Width="*"/>
         </Grid.ColumnDefinitions>
-        
-        <StackPanel>
-            <Button x:Name="LoadImageButton" 
-                    Content="Load Image" 
-                    Click="LoadImageButton_Click" />
-            <Button x:Name="ProcessButton"
-                    Content="Process"
-                    Click="ProcessButton_Click" />
-            <Button x:Name="EdgeDetectionButton1"
-                    Content="Vertical Edge"
-                    Click="EdgeDetectionButton1_Click" />
-            <Button x:Name="EdgeDetection2"
-                    Content="Horizontal Edge"
-                    Click="EdgeDetection2_Click"/>
-        </StackPanel>
-
+        <Grid>
+            <StackPanel>
+                <Button x:Name="LoadImageButton" 
+                        Content="Load Image" 
+                        Click="LoadImageButton_Click" />
+                <Button x:Name="ToGrayButton"
+                        Content="To Gray"
+                        Click="ToGrayButton_Click" />
+                <Button x:Name="ProcessButton"
+                        Content="Process"
+                        Click="ProcessButton_Click" />
+                <Button x:Name="EdgeDetectionButton1"
+                        Content="Vertical Edge"
+                        Click="EdgeDetectionButton1_Click" />
+                <Button x:Name="EdgeDetection2"
+                        Content="Horizontal Edge"
+                        Click="EdgeDetection2_Click"/>
+                <Button x:Name="RegionGrowingButton"
+                        Content="Region Growing"
+                        Click="RegionGrowingButton_Click" />
+            </StackPanel>
+            <Grid x:Name="ColorGrid" Height="50" Width="50" VerticalAlignment="Bottom"/>
+        </Grid>
         <Grid Grid.Column="1">
-            <Image x:Name="ImageView" />
+            <Image x:Name="ImageView" Tapped="ImageView_Tapped"/>
         </Grid>
     </Grid>
 </Page>

@@ -11,7 +11,7 @@ namespace ZPO.Core
     {
         public static WriteableBitmap Add(this WriteableBitmap bmp1, WriteableBitmap bmp2)
         {
-            if (bmp1.PixelHeight != bmp2.PixelHeight || bmp1.PixelWidth != bmp2.PixelHeight)
+            if (bmp1.PixelHeight != bmp2.PixelHeight || bmp1.PixelWidth != bmp2.PixelWidth)
             {
                 throw new ArgumentException("Bitmaps have to have same dimension", nameof(bmp2));
             }

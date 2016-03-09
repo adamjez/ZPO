@@ -107,9 +107,11 @@
     <None Include="project.json" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="ColorExtensions.cs" />
     <Compile Include="ImageProcessing.cs" />
     <Compile Include="MyColor.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
+    <Compile Include="RegionGrowing.cs" />
     <Compile Include="WriteableExtensions.cs" />
     <EmbeddedResource Include="Properties\ZPO.Core.rd.xml" />
   </ItemGroup>
