@@ -9,18 +9,27 @@
 
     <Grid Background="{ThemeResource ApplicationPageBackgroundThemeBrush}">
         <Grid.ColumnDefinitions>
-            <ColumnDefinition Width="*"/>
             <ColumnDefinition Width="Auto"/>
+            <ColumnDefinition Width="*"/>
         </Grid.ColumnDefinitions>
-
-        <Grid>
-            <Image x:Name="ImageView" />
-        </Grid>
         
-        <StackPanel Grid.Column="1">
+        <StackPanel>
             <Button x:Name="LoadImageButton" 
                     Content="Load Image" 
                     Click="LoadImageButton_Click" />
+            <Button x:Name="ProcessButton"
+                    Content="Process"
+                    Click="ProcessButton_Click" />
+            <Button x:Name="EdgeDetectionButton1"
+                    Content="Vertical Edge"
+                    Click="EdgeDetectionButton1_Click" />
+            <Button x:Name="EdgeDetection2"
+                    Content="Horizontal Edge"
+                    Click="EdgeDetection2_Click"/>
         </StackPanel>
+
+        <Grid Grid.Column="1">
+            <Image x:Name="ImageView" />
+        </Grid>
     </Grid>
 </Page>

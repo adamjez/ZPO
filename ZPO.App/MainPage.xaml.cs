@@ -4,6 +4,8 @@ using Windows.Storage.Pickers;
 using Windows.UI.Xaml;
 using Windows.UI.Xaml.Controls;
 using Windows.UI.Xaml.Media.Imaging;
+using ZPO.App.Extensions;
+using ZPO.Core;
 
 // The Blank Page item template is documented at http://go.microsoft.com/fwlink/?LinkId=402352&clcid=0x409
 
@@ -32,14 +34,38 @@ namespace ZPO.App
 
             if (file != null)
             {
-                var stream = await file.OpenAsync(Windows.Storage.FileAccessMode.Read);
-                var image = new BitmapImage();
-                image.SetSource(stream);
-                ImageView.Source = image;
+                var sourceImage = await file.AsWriteableImageAsync();
+
+                ImageView.Source = ImageProcessing.MakeGrayscale(sourceImage);
             }
             else
             {
                 //
+            }
+        }
+
+        private void ProcessButton_Click(Object sender, RoutedEventArgs e)
+        {
+            if (ImageView.Source != null && ImageView.Source is WriteableBitmap)
+            {
+                ImageView.Source = ImageProcessing.EdgeDetection((WriteableBitmap)ImageView.Source);
+            }
+
+        }
+
+        private void EdgeDetectionButton1_Click(Object sender, RoutedEventArgs e)
+        {
+            if (ImageView.Source != null && ImageView.Source is WriteableBitmap)
+            {
+                ImageView.Source = ImageProcessing.VerticalEdgeDetection((WriteableBitmap)ImageView.Source);
+            }
+        }
+
+        private void EdgeDetection2_Click(Object sender, RoutedEventArgs e)
+        {
+            if (ImageView.Source != null && ImageView.Source is WriteableBitmap)
+            {
+                ImageView.Source = ImageProcessing.HorizontalEdgeDetection((WriteableBitmap)ImageView.Source);
             }
         }
     }
