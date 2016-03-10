@@ -59,28 +59,19 @@ namespace ZPO.Core
                                         // Grow to neiboorhg
                                         if (x > 0 && y > 0 && x < w - 1 && y < h - 1)
                                         {
-                                            if (Grow(srcContext.Pixels[index - 1], resultContext.Pixels[index - 1], mycolor, tolerance * 10))
-                                            {
-                                                resultContext.Pixels[index - 1] = MyColor.White().ToInt();
-                                                changing = true;
-                                            }
+                                            changing = Changing(srcContext, resultContext, tolerance, index - 1, mycolor, changing);
+                                            changing = Changing(srcContext, resultContext, tolerance, index + 1, mycolor, changing);
+                                            changing = Changing(srcContext, resultContext, tolerance, index - w, mycolor, changing);
+                                            changing = Changing(srcContext, resultContext, tolerance, index + w, mycolor, changing);
 
-                                            if (Grow(srcContext.Pixels[index + 1], resultContext.Pixels[index + 1], mycolor, tolerance * 10))
-                                            {
-                                                resultContext.Pixels[index + 1] = MyColor.White().ToInt();
-                                                changing = true;
-                                            }
 
-                                            if (Grow(srcContext.Pixels[index + w], resultContext.Pixels[index + w], mycolor, tolerance * 10))
+                                            if (type == NeighboursType.Eight)
                                             {
-                                                resultContext.Pixels[index + w] = MyColor.White().ToInt();
-                                                changing = true;
-                                            }
+                                                changing = Changing(srcContext, resultContext, tolerance, index - w - 1, mycolor, changing);
+                                                changing = Changing(srcContext, resultContext, tolerance, index - w + 1, mycolor, changing);
+                                                changing = Changing(srcContext, resultContext, tolerance, index + w - 1, mycolor, changing);
+                                                changing = Changing(srcContext, resultContext, tolerance, index + w + 1, mycolor, changing);
 
-                                            if (Grow(srcContext.Pixels[index - w], resultContext.Pixels[index - w], mycolor, tolerance * 10))
-                                            {
-                                                resultContext.Pixels[index - w] = MyColor.White().ToInt();
-                                                changing = true;
                                             }
                                         }
                                     }   
@@ -100,6 +91,16 @@ namespace ZPO.Core
                 }
                 return result;
             }
+        }
+
+        private bool Changing(BitmapContext srcContext, BitmapContext resultContext, uint tolerance, int index, MyColor mycolor, bool changing)
+        {
+            if (Grow(srcContext.Pixels[index], resultContext.Pixels[index], mycolor, tolerance*4))
+            {
+                resultContext.Pixels[index] = MyColor.White().ToInt();
+                changing = true;
+            }
+            return changing;
         }
 
         public void AddCondition(IRegionGrowingCondition condition)

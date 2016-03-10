@@ -5,38 +5,77 @@
     xmlns:local="using:ZPO.App"
     xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
     xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
-    mc:Ignorable="d">
+    mc:Ignorable="d"
+    DataContext="{StaticResource MainViewModel}">
 
     <Grid Background="{ThemeResource ApplicationPageBackgroundThemeBrush}">
         <Grid.ColumnDefinitions>
-            <ColumnDefinition Width="Auto"/>
-            <ColumnDefinition Width="*"/>
+            <ColumnDefinition Width="*" MinWidth="400"/>
+            <ColumnDefinition Width="4*"/>
         </Grid.ColumnDefinitions>
         <Grid>
             <StackPanel>
-                <Button x:Name="LoadImageButton" 
-                        Content="Load Image" 
-                        Click="LoadImageButton_Click" />
-                <Button x:Name="ToGrayButton"
-                        Content="To Gray"
-                        Click="ToGrayButton_Click" />
-                <Button x:Name="ProcessButton"
+                <Button Content="To Gray"
+                        Command="{Binding ToGrayCommand}"
+                        HorizontalAlignment="Stretch"/>
+                <!--<Button x:Name="ProcessButton"
                         Content="Process"
-                        Click="ProcessButton_Click" />
-                <Button x:Name="EdgeDetectionButton1"
-                        Content="Vertical Edge"
-                        Click="EdgeDetectionButton1_Click" />
-                <Button x:Name="EdgeDetection2"
-                        Content="Horizontal Edge"
-                        Click="EdgeDetection2_Click"/>
-                <Button x:Name="RegionGrowingButton"
-                        Content="Region Growing"
-                        Click="RegionGrowingButton_Click" />
+                        Click="ProcessButton_Click" 
+                        HorizontalAlignment="Stretch"/>-->
+                <Button Content="Vertical Edge"
+                        Command="{Binding VerticalEdgeDetectionCommand}" 
+                        HorizontalAlignment="Stretch"/>
+                <Button Content="Horizontal Edge"
+                        Command="{Binding HorizontalEdgeDetectionCommand}"
+                        HorizontalAlignment="Stretch"/>
+                <Button Content="Region Growing"
+                        Command="{Binding RegionGrowingCommand}"
+                        HorizontalAlignment="Stretch"/>
+                <StackPanel Padding="20">
+                    <TextBlock Text="Selected Color"></TextBlock>
+                    <Grid Height="20" VerticalAlignment="Stretch" BorderBrush="Gray" BorderThickness="1">
+                        <TextBlock Text="None" 
+                                   VerticalAlignment="Center"
+                                   HorizontalAlignment="Center"/>
+                        <Rectangle VerticalAlignment="Stretch" HorizontalAlignment="Stretch">
+                            <Rectangle.Fill>
+                                <SolidColorBrush Color="{Binding CurrentColor}" />
+                            </Rectangle.Fill>
+                        </Rectangle>
+                    </Grid>
+                    <TextBlock Text="Hover Color"></TextBlock>
+                    <Grid Height="20" VerticalAlignment="Stretch" BorderBrush="Gray" BorderThickness="1">
+                        <TextBlock Text="None" 
+                                   VerticalAlignment="Center"
+                                   HorizontalAlignment="Center"/>
+                        <Rectangle VerticalAlignment="Stretch" HorizontalAlignment="Stretch">
+                            <Rectangle.Fill>
+                                <SolidColorBrush Color="{Binding HoverColor}" />
+                            </Rectangle.Fill>
+                        </Rectangle>
+                    </Grid>
+                </StackPanel>
+                <StackPanel Padding="20">
+                    <TextBlock Text="History"></TextBlock>
+                    <GridView ItemsSource="{Binding ImageHistory}">
+                        <GridView.ItemTemplate>
+                            <DataTemplate>
+                                <Image Source="{Binding }" MaxWidth="100" Tapped="HistoryImage_OnTapped"></Image>
+                            </DataTemplate>
+                        </GridView.ItemTemplate>
+                    </GridView>
+                </StackPanel>
             </StackPanel>
-            <Grid x:Name="ColorGrid" Height="50" Width="50" VerticalAlignment="Bottom"/>
+
         </Grid>
         <Grid Grid.Column="1">
-            <Image x:Name="ImageView" Tapped="ImageView_Tapped"/>
+            <Image x:Name="ImageView" Source="{Binding CurrentImage}" 
+                   Tapped="ImageView_Tapped" 
+                   PointerMoved="ImageView_PointerMoved"/>
         </Grid>
+        <CommandBar Grid.Column="0" VerticalAlignment="Bottom">
+            <AppBarButton Icon="BrowsePhotos" Label="Load Image" Command="{Binding LoadImageCommand}"/>
+            <AppBarButton Icon="Save" Label="Save Image"/>
+        </CommandBar>
     </Grid>
 </Page>
