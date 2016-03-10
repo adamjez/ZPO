@@ -10,7 +10,7 @@
 
     <Grid Background="{ThemeResource ApplicationPageBackgroundThemeBrush}">
         <Grid.ColumnDefinitions>
-            <ColumnDefinition Width="*" MinWidth="400"/>
+            <ColumnDefinition Width="*" MinWidth="200"/>
             <ColumnDefinition Width="4*"/>
         </Grid.ColumnDefinitions>
         <Grid>
@@ -18,10 +18,9 @@
                 <Button Content="To Gray"
                         Command="{Binding ToGrayCommand}"
                         HorizontalAlignment="Stretch"/>
-                <!--<Button x:Name="ProcessButton"
-                        Content="Process"
-                        Click="ProcessButton_Click" 
-                        HorizontalAlignment="Stretch"/>-->
+                <Button Content="Both Edges"
+                        Command="{Binding BothEdgesDetectionCommand}"
+                        HorizontalAlignment="Stretch"/>
                 <Button Content="Vertical Edge"
                         Command="{Binding VerticalEdgeDetectionCommand}" 
                         HorizontalAlignment="Stretch"/>

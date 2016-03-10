@@ -19,10 +19,13 @@ namespace ZPO.App.ViewModels
                 new ActionImageProcessCommand(this, ImageProcessing.HorizontalEdgeDetection);
             VerticalEdgeDetectionCommand = 
                 new ActionImageProcessCommand(this, ImageProcessing.VerticalEdgeDetection);
+            BothEdgesDetectionCommand =
+                new ActionImageProcessCommand(this, ImageProcessing.EdgeDetection);
             RegionGrowingCommand = new RegionGrowingCommand(this);
             LoadImageCommand = new LoadImageCommand(this);
         }
 
+        public ICommand BothEdgesDetectionCommand { get; private set; }
         public ICommand HorizontalEdgeDetectionCommand { get; private set; }
         public ICommand VerticalEdgeDetectionCommand { get; private set; }
         public ICommand ToGrayCommand { get; private set; }

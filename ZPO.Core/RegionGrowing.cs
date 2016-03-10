@@ -95,7 +95,7 @@ namespace ZPO.Core
 
         private bool Changing(BitmapContext srcContext, BitmapContext resultContext, uint tolerance, int index, MyColor mycolor, bool changing)
         {
-            if (Grow(srcContext.Pixels[index], resultContext.Pixels[index], mycolor, tolerance*4))
+            if (Grow(srcContext.Pixels[index], resultContext.Pixels[index], mycolor, tolerance * 20))
             {
                 resultContext.Pixels[index] = MyColor.White().ToInt();
                 changing = true;
