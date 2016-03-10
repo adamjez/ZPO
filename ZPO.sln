@@ -7,6 +7,12 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "ZPO.App", "ZPO.App\ZPO.App.
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "ZPO.Core", "ZPO.Core\ZPO.Core.csproj", "{7CBEAEE1-C039-4797-8BA4-80CD545119D6}"
 EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Docs", "Docs", "{B5B10B1E-D746-447E-A42F-CEE465826359}"
+	ProjectSection(SolutionItems) = preProject
+		..\..\..\Desktop\zpo_prezentace.pdf = ..\..\..\Desktop\zpo_prezentace.pdf
+		..\..\..\Desktop\zpo_prezentace.pptx = ..\..\..\Desktop\zpo_prezentace.pptx
+	EndProjectSection
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
