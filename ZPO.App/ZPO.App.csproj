@@ -89,6 +89,8 @@
   </PropertyGroup>
   <ItemGroup>
     <!-- A reference to the entire .Net Framework and Windows SDK are automatically included -->
+    <None Include="Docs\zpo_prezentace.pdf" />
+    <None Include="Docs\zpo_prezentace.pptx" />
     <None Include="project.json" />
   </ItemGroup>
   <ItemGroup>
