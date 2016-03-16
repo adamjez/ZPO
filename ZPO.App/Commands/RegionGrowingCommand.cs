@@ -1,4 +1,5 @@
 using System;
+using System.Linq;
 using System.Threading.Tasks;
 using Windows.UI.Xaml.Media.Imaging;
 using ZPO.App.ViewModels;
@@ -13,7 +14,7 @@ namespace ZPO.App.Commands
         public RegionGrowingCommand(MainViewModel viewModel)
             : base(viewModel)
         {
-            ViewModel.CurrentColorChanged +=
+            ViewModel.CurrentColors.CollectionChanged +=
                 (sender, args) => OnExecuteChanged();
         }
 
@@ -21,7 +22,7 @@ namespace ZPO.App.Commands
         {
             // Check if we picked some color (Alpha channel equals 0 when no color
             // is picked yet)
-            if (ViewModel.CurrentColor.A == 0)
+            if (!ViewModel.CurrentColors.Any())
             {
                 return false;
             }
@@ -35,8 +36,8 @@ namespace ZPO.App.Commands
                 ViewModel.Processing = true;
 
                 var process = new RegionGrowing(ViewModel.CurrentImage, new ColorCreator(ColorTypes.RGB));
-                process.Conditions.Add(new ColorCondition(ViewModel.CurrentColor.ToRGBColor(), 
-                    (uint)ViewModel.Tolerance, (uint)ViewModel.NeighborMultiplier));
+                var colors = ViewModel.CurrentColors.Select(color => (IColor)color.ToRGBColor()).ToList();
+                process.Conditions.Add(new ColorsCondition(colors, (uint)ViewModel.Tolerance, (uint)ViewModel.NeighborMultiplier));
 
                 var result = await process.ProcessAsync(NeighborhoodType.Eight);
 

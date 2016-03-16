@@ -26,7 +26,7 @@ namespace ZPO.App
 
             if (viewModel?.CurrentImage != null)
             {
-                viewModel.CurrentColor = GetColorUnderPointer(e.GetPosition(ImageView));
+                viewModel.CurrentColors.Add(GetColorUnderPointer(e.GetPosition(ImageView)));
             }
         }
 
@@ -73,6 +73,16 @@ namespace ZPO.App
             var viewModel = (MainViewModel)DataContext;
 
             viewModel.HoverColor = Color.FromArgb(0, 0, 0, 0);
+        }
+
+        private void Selector_OnSelectionChanged(object sender, SelectionChangedEventArgs e)
+        {
+            if (ColorsGridView.SelectedItem != null)
+            {
+                var viewModel = (MainViewModel)DataContext;
+
+                viewModel.CurrentColors.Remove((Color) ColorsGridView.SelectedItem);
+            }
         }
     }
 }

@@ -100,6 +100,8 @@
     <Compile Include="Commands\ActionImageProcessCommand.cs" />
     <Compile Include="Commands\ImageProcessCommand.cs" />
     <Compile Include="Commands\RegionGrowingCommand.cs" />
+    <Compile Include="Commands\SaveImageCommand.cs" />
+    <Compile Include="Converters\BoolToOpacityConverter.cs" />
     <Compile Include="Extensions\FileExtensions.cs" />
     <Compile Include="Extensions\ObservableQueue.cs" />
     <Compile Include="MainPage.xaml.cs">

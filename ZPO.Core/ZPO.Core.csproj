@@ -108,6 +108,7 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="Algorithms\ColorCondition.cs" />
+    <Compile Include="Algorithms\ColorsCondition.cs" />
     <Compile Include="Algorithms\IRegionGrowingCondition.cs" />
     <Compile Include="BitmapExtensions.cs" />
     <Compile Include="BufferExtensions.cs" />

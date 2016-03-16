@@ -4,9 +4,11 @@
     xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
     xmlns:local="using:ZPO.App"
     xmlns:viewModels="using:ZPO.App.ViewModels"
+    xmlns:converters="using:ZPO.App.Converters"
     RequestedTheme="Light">
 
     <Application.Resources>
         <viewModels:MainViewModel x:Key="MainViewModel" />
+        <converters:BoolToOpacityConverter x:Key="BoolToOpacityConverter" />
     </Application.Resources>
 </Application>

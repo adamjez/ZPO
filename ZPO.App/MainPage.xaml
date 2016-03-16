@@ -31,17 +31,20 @@
                         Command="{Binding RegionGrowingCommand}"
                         HorizontalAlignment="Stretch"/>
                 <StackPanel Padding="20">
-                    <TextBlock Text="Selected Color"></TextBlock>
-                    <Grid Height="20" VerticalAlignment="Stretch" BorderBrush="Gray" BorderThickness="1">
-                        <TextBlock Text="None" 
-                                   VerticalAlignment="Center"
-                                   HorizontalAlignment="Center"/>
-                        <Rectangle VerticalAlignment="Stretch" HorizontalAlignment="Stretch">
-                            <Rectangle.Fill>
-                                <SolidColorBrush Color="{Binding CurrentColor}" />
-                            </Rectangle.Fill>
-                        </Rectangle>
-                    </Grid>
+                    <TextBlock Text="Selected Colors"></TextBlock>
+                    <GridView ItemsSource="{Binding CurrentColors}" x:Name="ColorsGridView" 
+                                SelectionChanged="Selector_OnSelectionChanged">
+                        <GridView.ItemTemplate>
+                            <DataTemplate>
+                                <Rectangle Width="20" Height="20">
+                                    <Rectangle.Fill>
+                                        <SolidColorBrush Color="{Binding}" />
+                                    </Rectangle.Fill>
+                                </Rectangle>
+                            </DataTemplate>
+                        </GridView.ItemTemplate>
+                    </GridView>
+            
                     <TextBlock Text="Hover Color"></TextBlock>
                     <Grid Height="20" VerticalAlignment="Stretch" BorderBrush="Gray" BorderThickness="1">
                         <TextBlock Text="None" 
@@ -74,12 +77,13 @@
             <Image x:Name="ImageView" Source="{Binding CurrentImage}" 
                    Tapped="ImageView_Tapped" 
                    PointerMoved="ImageView_PointerMoved"
-                   PointerExited="ImageView_OnPointerExited"/>
+                   PointerExited="ImageView_OnPointerExited"
+                   Opacity="{Binding Processing, Converter={StaticResource BoolToOpacityConverter}}"/>
             <ProgressRing IsActive="{Binding Processing}" IsEnabled="True" Width="100" Height="100" Visibility="Visible"/>
         </Grid>
         <CommandBar Grid.Column="0" VerticalAlignment="Bottom">
             <AppBarButton Icon="BrowsePhotos" Label="Load Image" Command="{Binding LoadImageCommand}"/>
-            <AppBarButton Icon="Save" Label="Save Image"/>
+            <AppBarButton Icon="Save" Label="Save Image" Command="{Binding SaveImageCommand}"/>
         </CommandBar>
     </Grid>
 </Page>

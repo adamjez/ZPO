@@ -23,9 +23,10 @@ namespace ZPO.App.ViewModels
                 new ActionImageProcessCommand(this, ImageEdgeDetection.EdgeDetection);
             RegionGrowingCommand = new RegionGrowingCommand(this);
             LoadImageCommand = new LoadImageCommand(this);
+            SaveImageCommand = new SaveImageCommand(this);
             // Default tolerance value
             Tolerance = 20;
-            NeighborMultiplier = 20;
+            NeighborMultiplier = 10;
         }
 
         public ICommand BothEdgesDetectionCommand { get; private set; }
@@ -34,6 +35,8 @@ namespace ZPO.App.ViewModels
         public ICommand ToGrayCommand { get; private set; }
         public ICommand RegionGrowingCommand { get; private set; }
         public ICommand LoadImageCommand { get; private set; }
+        public ICommand SaveImageCommand { get; private set; }
+
 
         ObservableCollection<WriteableBitmap> _imageHistory
            = new ObservableCollection<WriteableBitmap>();
@@ -50,17 +53,12 @@ namespace ZPO.App.ViewModels
             private set { SetProperty(ref _currentImage, value); }
         }
 
-        Color _currentColor;
-        public Color CurrentColor
+        ObservableCollection<Color> currentColors
+           = new ObservableCollection<Color>();
+        public ObservableCollection<Color> CurrentColors
         {
-            get { return _currentColor; }
-            set
-            {
-                if (SetProperty(ref _currentColor, value))
-                {
-                    CurrentColorChanged?.Invoke(this, EventArgs.Empty);
-                }
-            }
+            get { return currentColors; }
+            set { SetProperty(ref currentColors, value); }
         }
 
         Color _hoverColor;
@@ -98,11 +96,11 @@ namespace ZPO.App.ViewModels
                 ImageHistory.Insert(0, CurrentImage);
 
             CurrentImage = image;
+            currentColors.Clear();
 
             CurrentImageChanged?.Invoke(this, EventArgs.Empty);
         }
 
         public event EventHandler CurrentImageChanged;
-        public event EventHandler CurrentColorChanged;
     }
 }
