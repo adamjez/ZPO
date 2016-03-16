@@ -107,11 +107,23 @@
     <None Include="project.json" />
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="ColorExtensions.cs" />
-    <Compile Include="ImageProcessing.cs" />
-    <Compile Include="MyColor.cs" />
+    <Compile Include="Algorithms\IRegionGrowingCondition.cs" />
+    <Compile Include="BitmapExtensions.cs" />
+    <Compile Include="Colors\ColorContext.cs" />
+    <Compile Include="Colors\ColorCreator.cs" />
+    <Compile Include="Colors\ColorEnumerator.cs" />
+    <Compile Include="Colors\ColorExtensions.cs" />
+    <Compile Include="Colors\ColorServiceHelper.cs" />
+    <Compile Include="Colors\IColor.cs" />
+    <Compile Include="Colors\IColorService.cs" />
+    <Compile Include="Colors\IntColor.cs" />
+    <Compile Include="Colors\RGBColorService.cs" />
+    <Compile Include="Colors\ColorTypes.cs" />
+    <Compile Include="ImageEdgeDetection.cs" />
+    <Compile Include="Colors\RGBColor.cs" />
+    <Compile Include="NeighboursType.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
-    <Compile Include="RegionGrowing.cs" />
+    <Compile Include="Algorithms\RegionGrowing.cs" />
     <Compile Include="WriteableExtensions.cs" />
     <EmbeddedResource Include="Properties\ZPO.Core.rd.xml" />
   </ItemGroup>

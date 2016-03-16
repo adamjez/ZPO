@@ -14,15 +14,18 @@ namespace ZPO.App.ViewModels
         public MainViewModel()
         {
             ImageHistory = new ObservableQueue<WriteableBitmap>(12);
-            ToGrayCommand = new ActionImageProcessCommand(this, ImageProcessing.MakeGrayscale);
+            ToGrayCommand = new ActionImageProcessCommand(this, ImageEdgeDetection.MakeGrayscale);
             HorizontalEdgeDetectionCommand = 
-                new ActionImageProcessCommand(this, ImageProcessing.HorizontalEdgeDetection);
+                new ActionImageProcessCommand(this, ImageEdgeDetection.HorizontalEdgeDetection);
             VerticalEdgeDetectionCommand = 
-                new ActionImageProcessCommand(this, ImageProcessing.VerticalEdgeDetection);
+                new ActionImageProcessCommand(this, ImageEdgeDetection.VerticalEdgeDetection);
             BothEdgesDetectionCommand =
-                new ActionImageProcessCommand(this, ImageProcessing.EdgeDetection);
+                new ActionImageProcessCommand(this, ImageEdgeDetection.EdgeDetection);
             RegionGrowingCommand = new RegionGrowingCommand(this);
             LoadImageCommand = new LoadImageCommand(this);
+            // Default tolerance value
+            Tolerance = 20;
+            NeighborMultiplier = 20;
         }
 
         public ICommand BothEdgesDetectionCommand { get; private set; }
@@ -66,6 +69,28 @@ namespace ZPO.App.ViewModels
             get { return _hoverColor; }
             set { SetProperty(ref _hoverColor, value); }
         }
+
+        int _tolerance;
+        public int Tolerance
+        {
+            get { return _tolerance; }
+            set { SetProperty(ref _tolerance, value); }
+        }
+
+        int _neighborMultiplier;
+        public int NeighborMultiplier
+        {
+            get { return _neighborMultiplier; }
+            set { SetProperty(ref _neighborMultiplier, value); }
+        }
+
+        bool _processing;
+        public bool Processing
+        {
+            get { return _processing; }
+            set { SetProperty(ref _processing, value); }
+        }
+
 
         public void SetNewImage(WriteableBitmap image)
         {

@@ -1,34 +1,33 @@
-﻿using Windows.UI;
-using Windows.UI.Xaml.Media.Imaging;
+﻿using Windows.UI.Xaml.Media.Imaging;
 
 namespace ZPO.Core
 {
-    public static class ImageProcessing
+    public static class ImageEdgeDetection
     {
         public static WriteableBitmap EdgeDetection(WriteableBitmap source)
         {
-            var vertResult = VerticalEdgeDetection(source);
-            var horzResult = HorizontalEdgeDetection(source);
+            var verticalKernel = VerticalEdgeDetection(source);
+            var horizontalKernel = HorizontalEdgeDetection(source);
 
-            return vertResult.Add(horzResult);
+            return verticalKernel.Add(horizontalKernel);
         }
 
         public static WriteableBitmap HorizontalEdgeDetection(WriteableBitmap source)
-        { 
-            int[,] horzKernel = { { -1, -2, -1 },
+        {
+            int[,] horizontalKernel = { { -1, -2, -1 },
                                { 0, 0, 0 },
                                { 1, 2, 1 } };
 
-            return source.MyConvolute(horzKernel, 1);
+            return source.MyConvolute(horizontalKernel, 1);
         }
 
         public static WriteableBitmap VerticalEdgeDetection(WriteableBitmap source)
         {
-            int[,] vertKernel = { { -1, 0, 1 },
+            int[,] verticalKernel = { { -1, 0, 1 },
                                { -2, 0, 2 },
                                { -1, 0, 1 } };
 
-            return source.MyConvolute(vertKernel, 1);
+            return source.MyConvolute(verticalKernel, 1);
         }
 
         public static WriteableBitmap MakeGrayscale(WriteableBitmap original)

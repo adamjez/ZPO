@@ -1,7 +1,10 @@
 using System;
+using System.Threading.Tasks;
 using Windows.UI.Xaml.Media.Imaging;
 using ZPO.App.ViewModels;
 using ZPO.Core;
+using ZPO.Core.Algorithms;
+using ZPO.Core.Colors;
 
 namespace ZPO.App.Commands
 {
@@ -25,13 +28,20 @@ namespace ZPO.App.Commands
             return base.CanExecute(parameter);
         }
 
-        public override void Execute(object parameter)
+        public override async void Execute(object parameter)
         {
             if (CanExecute())
             {
-                var process = new RegionGrowing(ViewModel.CurrentImage);
-                ViewModel.SetNewImage(
-                    process.Process(NeighboursType.Eight, ViewModel.CurrentColor, 5));
+                ViewModel.Processing = true;
+
+                var process = new RegionGrowing(ViewModel.CurrentImage, new ColorCreator(ColorTypes.RGB));
+
+                var result = process.Process(ViewModel.CurrentColor.ToRGBColor(), (uint) ViewModel.Tolerance,
+                            (uint) ViewModel.NeighborMultiplier, NeighborhoodType.Eight);
+                
+                ViewModel.SetNewImage(result);
+
+                ViewModel.Processing = false;
             }
         }
     }

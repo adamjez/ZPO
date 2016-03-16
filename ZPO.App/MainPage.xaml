@@ -53,13 +53,16 @@
                             </Rectangle.Fill>
                         </Rectangle>
                     </Grid>
+                    <Slider Value="{Binding Tolerance, Mode=TwoWay}" Minimum="0" Maximum="100"  Header="Tolerance" StepFrequency="2"></Slider>
+                    <Slider Value="{Binding NeighborMultiplier, Mode=TwoWay}" Minimum="0" Maximum="50"  Header="Neighbor Multiplier" StepFrequency="2"></Slider>
+
                 </StackPanel>
                 <StackPanel Padding="20">
                     <TextBlock Text="History"></TextBlock>
                     <GridView ItemsSource="{Binding ImageHistory}">
                         <GridView.ItemTemplate>
                             <DataTemplate>
-                                <Image Source="{Binding }" MaxWidth="100" Tapped="HistoryImage_OnTapped"></Image>
+                                <Image Source="{Binding}" MaxWidth="100" Tapped="HistoryImage_OnTapped"></Image>
                             </DataTemplate>
                         </GridView.ItemTemplate>
                     </GridView>
@@ -68,9 +71,11 @@
 
         </Grid>
         <Grid Grid.Column="1">
+            <ProgressRing IsActive="{Binding Processing}" />
             <Image x:Name="ImageView" Source="{Binding CurrentImage}" 
                    Tapped="ImageView_Tapped" 
-                   PointerMoved="ImageView_PointerMoved"/>
+                   PointerMoved="ImageView_PointerMoved"
+                   PointerExited="ImageView_OnPointerExited"/>
         </Grid>
         <CommandBar Grid.Column="0" VerticalAlignment="Bottom">
             <AppBarButton Icon="BrowsePhotos" Label="Load Image" Command="{Binding LoadImageCommand}"/>

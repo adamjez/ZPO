@@ -4,6 +4,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using Windows.UI.Xaml.Media.Imaging;
+using ZPO.Core.Colors;
 
 namespace ZPO.Core
 {
@@ -27,7 +28,7 @@ namespace ZPO.Core
                 {
                     for (var index = 0; index < h * w; index++)
                     {
-                        var sumColor = new MyColor(srcContext1.Pixels[index]) + new MyColor(srcContext2.Pixels[index]);
+                        var sumColor = new RGBColor(srcContext1.Pixels[index]).Add(new RGBColor(srcContext2.Pixels[index]));
                         resultContext.Pixels[index] = sumColor.ToInt();
                     }
                 }
@@ -41,8 +42,8 @@ namespace ZPO.Core
             bmp.ForEach((x, y, c) => Windows.UI.Color.FromArgb(255, c.R, c.G, c.B));
         }
 
-        // Source: Upravene verze z knihovny WritableBitmapEx
-        // Uprava: Nepocita se alpha channel a vysledna barva se da do absolutni hodnoty
+        // Source: Edited version from library WritableBitmapEx
+        // Edit: Alpha channel is not beeing computed and result color is retrieved from absolute values
         public static WriteableBitmap MyConvolute(this WriteableBitmap bmp, int[,] kernel, int kernelFactorSum)
         {
             var kh = kernel.GetUpperBound(0) + 1;

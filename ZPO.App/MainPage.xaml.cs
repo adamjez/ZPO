@@ -67,5 +67,12 @@ namespace ZPO.App
                 }
             }
         }
+
+        private void ImageView_OnPointerExited(object sender, PointerRoutedEventArgs e)
+        {
+            var viewModel = (MainViewModel)DataContext;
+
+            viewModel.HoverColor = Color.FromArgb(0, 0, 0, 0);
+        }
     }
 }
