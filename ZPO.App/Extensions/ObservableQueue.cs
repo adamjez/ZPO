@@ -18,9 +18,9 @@ namespace ZPO.App.Extensions
         {
             if (Count == _capacity)
             {
-                this.RemoveAt(0);
-                index--;
+                this.RemoveAt(this.Count - 1);
             }
+
             base.InsertItem(index, item);
         }
     }

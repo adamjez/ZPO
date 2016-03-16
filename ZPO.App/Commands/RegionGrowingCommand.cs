@@ -10,7 +10,7 @@ namespace ZPO.App.Commands
 {
     public class RegionGrowingCommand : ImageProcessCommand
     {
-        public RegionGrowingCommand(MainViewModel viewModel) 
+        public RegionGrowingCommand(MainViewModel viewModel)
             : base(viewModel)
         {
             ViewModel.CurrentColorChanged +=
@@ -19,7 +19,7 @@ namespace ZPO.App.Commands
 
         public override bool CanExecute(object parameter = null)
         {
-            // Check if we picked some color (Alpha channel equels 0 when no color
+            // Check if we picked some color (Alpha channel equals 0 when no color
             // is picked yet)
             if (ViewModel.CurrentColor.A == 0)
             {
@@ -35,11 +35,15 @@ namespace ZPO.App.Commands
                 ViewModel.Processing = true;
 
                 var process = new RegionGrowing(ViewModel.CurrentImage, new ColorCreator(ColorTypes.RGB));
+                process.AddCondition(new ColorCondition(ViewModel.CurrentColor.ToRGBColor(), 
+                    (uint)ViewModel.Tolerance, (uint)ViewModel.NeighborMultiplier));
 
-                var result = process.Process(ViewModel.CurrentColor.ToRGBColor(), (uint) ViewModel.Tolerance,
-                            (uint) ViewModel.NeighborMultiplier, NeighborhoodType.Eight);
-                
-                ViewModel.SetNewImage(result);
+                var result = await process.ProcessAsync(NeighborhoodType.Eight);
+
+                var resultBitmap = ViewModel.CurrentImage.CreateCopy();
+                resultBitmap.FromByteArray(result);
+
+                ViewModel.SetNewImage(resultBitmap);
 
                 ViewModel.Processing = false;
             }

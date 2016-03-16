@@ -71,11 +71,11 @@
 
         </Grid>
         <Grid Grid.Column="1">
-            <ProgressRing IsActive="{Binding Processing}" />
             <Image x:Name="ImageView" Source="{Binding CurrentImage}" 
                    Tapped="ImageView_Tapped" 
                    PointerMoved="ImageView_PointerMoved"
                    PointerExited="ImageView_OnPointerExited"/>
+            <ProgressRing IsActive="{Binding Processing}" IsEnabled="True" Width="100" Height="100" Visibility="Visible"/>
         </Grid>
         <CommandBar Grid.Column="0" VerticalAlignment="Bottom">
             <AppBarButton Icon="BrowsePhotos" Label="Load Image" Command="{Binding LoadImageCommand}"/>

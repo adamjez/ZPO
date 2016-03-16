@@ -95,7 +95,7 @@ namespace ZPO.App.ViewModels
         public void SetNewImage(WriteableBitmap image)
         {
             if(CurrentImage != null)
-                ImageHistory.Add(CurrentImage);
+                ImageHistory.Insert(0, CurrentImage);
 
             CurrentImage = image;
 
