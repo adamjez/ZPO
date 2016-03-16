@@ -111,9 +111,7 @@
     <Compile Include="Algorithms\IRegionGrowingCondition.cs" />
     <Compile Include="BitmapExtensions.cs" />
     <Compile Include="BufferExtensions.cs" />
-    <Compile Include="Colors\ColorContext.cs" />
     <Compile Include="Colors\ColorCreator.cs" />
-    <Compile Include="Colors\ColorEnumerator.cs" />
     <Compile Include="Colors\ColorExtensions.cs" />
     <Compile Include="Colors\ColorServiceHelper.cs" />
     <Compile Include="Colors\IColor.cs" />

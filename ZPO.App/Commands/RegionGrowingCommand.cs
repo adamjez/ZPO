@@ -35,13 +35,14 @@ namespace ZPO.App.Commands
                 ViewModel.Processing = true;
 
                 var process = new RegionGrowing(ViewModel.CurrentImage, new ColorCreator(ColorTypes.RGB));
-                process.AddCondition(new ColorCondition(ViewModel.CurrentColor.ToRGBColor(), 
+                process.Conditions.Add(new ColorCondition(ViewModel.CurrentColor.ToRGBColor(), 
                     (uint)ViewModel.Tolerance, (uint)ViewModel.NeighborMultiplier));
 
                 var result = await process.ProcessAsync(NeighborhoodType.Eight);
 
                 var resultBitmap = ViewModel.CurrentImage.CreateCopy();
                 resultBitmap.FromByteArray(result);
+                resultBitmap.RemoveAlphaChannel();
 
                 ViewModel.SetNewImage(resultBitmap);
 

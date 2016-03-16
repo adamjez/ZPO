@@ -16,9 +16,9 @@ namespace ZPO.Core.Algorithms
             this.toleranceMultiplier = toleranceMultiplier;
         }
 
-        public bool Compare(IColor pixelColor, bool isNeighbor, int mul)
+        public bool Compare(IColor pixelColor, int neighborCount)
         {
-            var multiplier = isNeighbor ? toleranceMultiplier * mul : 1;
+            var multiplier = neighborCount > 0 ? toleranceMultiplier : 1;
             return Math.Abs(pixelColor.Difference(compareColor)) <= tolerance*multiplier;
         }
 
