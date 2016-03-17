@@ -1,4 +1,5 @@
-﻿using Windows.UI.Xaml.Media.Imaging;
+﻿using System;
+using Windows.UI.Xaml.Media.Imaging;
 
 namespace ZPO.Core
 {
@@ -10,7 +11,6 @@ namespace ZPO.Core
             //                  { 2, 4, 2 },
             //                  { 1, 2, 1 } };
             //return source.MyConvolute(kernel, 16);
-
 
             int[,] kernel = { { 1, 2, 1 },
                               { 2, 8, 2 },

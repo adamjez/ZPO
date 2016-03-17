@@ -1,15 +1,10 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.Diagnostics;
-using System.IO;
 using System.Linq;
 using System.Runtime.CompilerServices;
 using System.Threading.Tasks;
-using Windows.Foundation;
-using Windows.UI.ViewManagement;
 using Windows.UI.Xaml.Media.Imaging;
 using ZPO.Core.Colors;
-using Buffer = System.Buffer;
 
 namespace ZPO.Core.Algorithms
 {
@@ -57,30 +52,58 @@ namespace ZPO.Core.Algorithms
                 //if (iterations == 10)
                 //    break;
                 change = false;
-                var currentIndex = 0;
-                while (currentIndex < pixelsCount)
+                //var currentIndex = 0;
+                Parallel.For(0, bitmapHeight, y =>
                 {
-                    var realIndex = currentIndex * 4;
-
-                    ++currentIndex;
-
-                    var resultColor = resultBuffer.ToInt(realIndex);
-
-                    if (resultColor.IsFlagged())
+                    for (int x = 0; x < bitmapWidth; x++)
                     {
-                        continue;
+                        var currentIndex = (y*bitmapWidth + x);
+                        var realIndex = currentIndex * 4;
+
+                        //++currentIndex;
+
+                        var resultColor = resultBuffer.ToInt(realIndex);
+
+                        if (resultColor.IsFlagged())
+                        {
+                            continue;
+                        }
+
+                        var pixelColor = _colorCreator.Create(sourceBuffer.ToInt(realIndex));
+                        if (Conditions.Any(cond => cond.Compare(pixelColor, resultColor.GetNeighborMultiplier())))
+                        {
+                            change = true;
+
+                            resultColor = ColorExtensions.Flag();
+                            resultColor.ToArray(resultBuffer, realIndex);
+
+                            AddNeighbor(currentIndex, resultBuffer, type);
+                        }
                     }
+                });
+                //while (currentIndex < pixelsCount)
+                {
+                    //var realIndex = currentIndex * 4;
 
-                    var pixelColor = _colorCreator.Create(sourceBuffer.ToInt(realIndex));
-                    if (Conditions.Any(cond => cond.Compare(pixelColor, resultColor.GetNeighborMultiplier())))
-                    {
-                        change = true;
+                    //++currentIndex;
 
-                        resultColor = ColorExtensions.Flag();
-                        resultColor.ToArray(resultBuffer, realIndex);
+                    //var resultColor = resultBuffer.ToInt(realIndex);
 
-                        AddNeighbor(currentIndex, resultBuffer, type);
-                    }
+                    //if (resultColor.IsFlagged())
+                    //{
+                    //    continue;
+                    //}
+
+                    //var pixelColor = _colorCreator.Create(sourceBuffer.ToInt(realIndex));
+                    //if (Conditions.Any(cond => cond.Compare(pixelColor, resultColor.GetNeighborMultiplier())))
+                    //{
+                    //    change = true;
+
+                    //    resultColor = ColorExtensions.Flag();
+                    //    resultColor.ToArray(resultBuffer, realIndex);
+
+                    //    AddNeighbor(currentIndex, resultBuffer, type);
+                    //}
                 }
             }
 
