@@ -35,6 +35,7 @@ namespace ZPO.App.Commands
 
             if (file != null)
             {
+                _viewModel.CurrentColors.Clear();
                 _viewModel.SetNewImage(await file.AsWriteableImageAsync());
             }
         }

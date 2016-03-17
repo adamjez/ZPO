@@ -34,6 +34,5 @@ namespace ZPO.Core
         {
             return original.Gray();
         }
-
     }
 }

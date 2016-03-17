@@ -33,9 +33,14 @@ namespace ZPO.Core.Algorithms
 
         public List<IRegionGrowingCondition> Conditions { get; private set; }
 
-        public async Task<byte[]> ProcessAsync(NeighborhoodType type)
+        public async Task<WriteableBitmap> ProcessAsync(NeighborhoodType type)
         {
-            return await Task.Factory.StartNew(() => Process(type));
+            var result = await Task.Factory.StartNew(() => Process(type));
+
+            var resultBitmap = BitmapFactory.New(bitmapWidth, bitmapHeight);
+            resultBitmap.FromByteArray(result);
+            resultBitmap.RemoveAlphaChannel();
+            return resultBitmap;
         }
 
         public byte[] Process(NeighborhoodType type)

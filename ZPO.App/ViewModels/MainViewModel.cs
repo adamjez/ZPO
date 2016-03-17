@@ -15,12 +15,10 @@ namespace ZPO.App.ViewModels
         {
             ImageHistory = new ObservableQueue<WriteableBitmap>(12);
             ToGrayCommand = new ActionImageProcessCommand(this, ImageEdgeDetection.MakeGrayscale);
-            HorizontalEdgeDetectionCommand = 
-                new ActionImageProcessCommand(this, ImageEdgeDetection.HorizontalEdgeDetection);
-            VerticalEdgeDetectionCommand = 
-                new ActionImageProcessCommand(this, ImageEdgeDetection.VerticalEdgeDetection);
-            BothEdgesDetectionCommand =
-                new ActionImageProcessCommand(this, ImageEdgeDetection.EdgeDetection);
+            BlurCommand = new ActionImageProcessCommand(this, ImageBlur.GaussianBlur);
+            EdgeDetectionCommand = new ActionImageProcessCommand(this, ImageEdgeDetection.EdgeDetection);
+            DilateCommand = new ActionImageProcessCommand(this, Morphology.Dilate);
+            ErodeCommand = new ActionImageProcessCommand(this, Morphology.Erode);
             RegionGrowingCommand = new RegionGrowingCommand(this);
             LoadImageCommand = new LoadImageCommand(this);
             SaveImageCommand = new SaveImageCommand(this);
@@ -29,9 +27,10 @@ namespace ZPO.App.ViewModels
             NeighborMultiplier = 10;
         }
 
-        public ICommand BothEdgesDetectionCommand { get; private set; }
-        public ICommand HorizontalEdgeDetectionCommand { get; private set; }
-        public ICommand VerticalEdgeDetectionCommand { get; private set; }
+        public ICommand EdgeDetectionCommand { get; private set; }
+        public ICommand BlurCommand { get; private set; }
+        public ICommand DilateCommand { get; private set; }
+        public ICommand ErodeCommand { get; private set; }
         public ICommand ToGrayCommand { get; private set; }
         public ICommand RegionGrowingCommand { get; private set; }
         public ICommand LoadImageCommand { get; private set; }
@@ -96,7 +95,6 @@ namespace ZPO.App.ViewModels
                 ImageHistory.Insert(0, CurrentImage);
 
             CurrentImage = image;
-            currentColors.Clear();
 
             CurrentImageChanged?.Invoke(this, EventArgs.Empty);
         }
