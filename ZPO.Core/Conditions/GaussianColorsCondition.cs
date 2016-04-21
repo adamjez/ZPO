@@ -31,11 +31,20 @@ namespace ZPO.Core.Conditions
 
         public override bool Compare(IColor pixelColor, int neighborCount)
         {
-            var a = 1/(Deviation.X*Math.Sqrt(2*Math.PI));
-            var b = -Math.Pow(pixelColor.GetFirstPart() - Mean.X, 2)/(2*Math.Pow(Deviation.X, 2));
+            var result = GaussianFunction(pixelColor.GetFirstPart(), Mean.X, Deviation.X);
+            result += GaussianFunction(pixelColor.GetSecondPart(), Mean.Y, Deviation.Y);
+            result += GaussianFunction(pixelColor.GetThirdPart(), Mean.Z, Deviation.Z);
 
-            var result = a*Math.Exp(b);
+
             return result > threshold;
+        }
+
+        private double GaussianFunction(int value, double mean, double deviation)
+        {
+            var a = 1 / (deviation * Math.Sqrt(2 * Math.PI));
+            var b = -Math.Pow(value - mean, 2) / (2 * Math.Pow(deviation, 2));
+
+            return a * Math.Exp(b);
         }
 
         private double ComputeDeviation(IEnumerable<int> values, double mean)
