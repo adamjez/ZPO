@@ -5,6 +5,7 @@ using System.Runtime.CompilerServices;
 using System.Threading.Tasks;
 using Windows.UI.Xaml.Media.Imaging;
 using ZPO.Core.Colors;
+using ZPO.Core.Conditions;
 
 namespace ZPO.Core.Algorithms
 {
@@ -53,14 +54,13 @@ namespace ZPO.Core.Algorithms
                 //    break;
                 change = false;
                 //var currentIndex = 0;
-                Parallel.For(0, bitmapHeight, y =>
+                //Parallel.For(0, bitmapHeight, y =>
+                for (int y = 0; y < bitmapHeight; y++)
                 {
                     for (int x = 0; x < bitmapWidth; x++)
                     {
                         var currentIndex = (y*bitmapWidth + x);
                         var realIndex = currentIndex * 4;
-
-                        //++currentIndex;
 
                         var resultColor = resultBuffer.ToInt(realIndex);
 
@@ -80,7 +80,7 @@ namespace ZPO.Core.Algorithms
                             AddNeighbor(currentIndex, resultBuffer, type);
                         }
                     }
-                });
+                }
                 //while (currentIndex < pixelsCount)
                 {
                     //var realIndex = currentIndex * 4;

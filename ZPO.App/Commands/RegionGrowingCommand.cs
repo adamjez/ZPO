@@ -6,6 +6,7 @@ using ZPO.App.ViewModels;
 using ZPO.Core;
 using ZPO.Core.Algorithms;
 using ZPO.Core.Colors;
+using ZPO.Core.Conditions;
 
 namespace ZPO.App.Commands
 {
@@ -36,8 +37,10 @@ namespace ZPO.App.Commands
                 ViewModel.Processing = true;
 
                 var process = new RegionGrowing(ViewModel.CurrentImage, new ColorCreator(ColorTypes.RGB));
+
                 var colors = ViewModel.CurrentColors.Select(color => (IColor)color.ToRGBColor()).ToList();
-                process.Conditions.Add(new ColorsCondition(colors, (uint)ViewModel.Tolerance, (uint)ViewModel.NeighborMultiplier));
+                //process.Conditions.Add(new ColorsCondition(colors, (uint)ViewModel.Tolerance, (uint)ViewModel.NeighborMultiplier));
+                process.Conditions.Add(new GaussianColorsCondition(colors, (uint)ViewModel.Tolerance, (uint)ViewModel.NeighborMultiplier));
 
                 var result = await process.ProcessAsync(NeighborhoodType.Eight);
 

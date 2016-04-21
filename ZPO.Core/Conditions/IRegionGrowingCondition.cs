@@ -1,6 +1,6 @@
 using ZPO.Core.Colors;
 
-namespace ZPO.Core.Algorithms
+namespace ZPO.Core.Conditions
 {
     public interface IRegionGrowingCondition
     {

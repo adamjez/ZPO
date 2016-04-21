@@ -107,9 +107,6 @@
     <None Include="project.json" />
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="Algorithms\ColorCondition.cs" />
-    <Compile Include="Algorithms\ColorsCondition.cs" />
-    <Compile Include="Algorithms\IRegionGrowingCondition.cs" />
     <Compile Include="BitmapExtensions.cs" />
     <Compile Include="BufferExtensions.cs" />
     <Compile Include="Colors\ColorCreator.cs" />
@@ -120,6 +117,10 @@
     <Compile Include="Colors\IntColor.cs" />
     <Compile Include="Colors\RGBColorService.cs" />
     <Compile Include="Colors\ColorTypes.cs" />
+    <Compile Include="Conditions\ColorCondition.cs" />
+    <Compile Include="Conditions\ColorsCondition.cs" />
+    <Compile Include="Conditions\GaussianColorsCondition.cs" />
+    <Compile Include="Conditions\IRegionGrowingCondition.cs" />
     <Compile Include="ImageBlur.cs" />
     <Compile Include="ImageEdgeDetection.cs" />
     <Compile Include="Colors\RGBColor.cs" />

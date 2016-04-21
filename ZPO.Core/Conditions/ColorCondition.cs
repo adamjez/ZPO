@@ -1,7 +1,8 @@
 using System;
+using ZPO.Core.Algorithms;
 using ZPO.Core.Colors;
 
-namespace ZPO.Core.Algorithms
+namespace ZPO.Core.Conditions
 {
     public class ColorCondition : IRegionGrowingCondition
     {
@@ -21,6 +22,5 @@ namespace ZPO.Core.Algorithms
             var multiplier = neighborCount > 0 ? toleranceMultiplier : 1;
             return Math.Abs(pixelColor.Difference(compareColor)) <= tolerance*multiplier;
         }
-
     }
 }

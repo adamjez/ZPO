@@ -50,6 +50,12 @@
             throw new System.NotImplementedException();
         }
 
+        public int GetFirstPart() => Red;
+
+        public int GetSecondPart() => Green;
+
+        public int GetThirdPart() => Blue;
+
         public bool IsFlagged()
         {
             return Red == 255 && Green == 255 && Blue == 255;
