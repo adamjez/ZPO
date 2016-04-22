@@ -1,5 +1,6 @@
 ﻿{
   "dependencies": {
+    "MathNet.Numerics": "3.11.0",
     "Microsoft.NETCore.UniversalWindowsPlatform": "5.0.0",
     "WriteableBitmapEx": "1.5.0"
   },
