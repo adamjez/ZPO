@@ -26,28 +26,23 @@ namespace ZPO.Core.Conditions
                     compareColors.Select(color => color.GetThirdPart()).Average()
                 });
 
-            var firstPartList = compareColors.Select(color => color.GetFirstPart()).ToList();
-            var secondPartList = compareColors.Select(color => color.GetSecondPart()).ToList();
-            var thirdPartList = compareColors.Select(color => color.GetThirdPart()).ToList();
+            var colorsMatrix = CreateMatrix.DenseOfColumnArrays(
+                new double[][]
+                {
+                        compareColors.Select(color => color.GetFirstPart() - MeanVector[0]).ToArray(),
+                        compareColors.Select(color => color.GetSecondPart() - MeanVector[1]).ToArray(),
+                        compareColors.Select(color => color.GetThirdPart() - MeanVector[2]).ToArray(),
+                });
 
-            CovarianceMatrix = CreateMatrix.DenseOfArray(new double[,]
-            {
-                {
-                    ComputeDeviation(firstPartList, MeanVector[0], firstPartList, MeanVector[0]),
-                    ComputeDeviation(firstPartList, MeanVector[0], secondPartList, MeanVector[1]),
-                    ComputeDeviation(firstPartList, MeanVector[0], thirdPartList, MeanVector[2])
-                },
-                {
-                    ComputeDeviation(secondPartList, MeanVector[1], firstPartList, MeanVector[0]),
-                    ComputeDeviation(secondPartList, MeanVector[1], secondPartList, MeanVector[1]),
-                    ComputeDeviation(secondPartList, MeanVector[1], thirdPartList, MeanVector[2])
-                },
-                {
-                    ComputeDeviation(thirdPartList, MeanVector[2], firstPartList, MeanVector[0]),
-                    ComputeDeviation(thirdPartList, MeanVector[2], secondPartList, MeanVector[1]),
-                    ComputeDeviation(thirdPartList, MeanVector[2], thirdPartList, MeanVector[2])
-                }
-            });
+            CovarianceMatrix = 1.0 / compareColors.Count * colorsMatrix.Transpose() * colorsMatrix;
+
+            //for(int i = 0 ; i < CovarianceMatrix.RowCount; ++i)
+            //    for (int j = 0; j < CovarianceMatrix.ColumnCount; ++j)
+            //        CovarianceMatrix[i,j] = Math.Sqrt(CovarianceMatrix[i,j]);
+
+
+            var standardDevitation = MeanVector - CovarianceMatrix.Diagonal();
+            this.threshold = GaussianFunction3D(standardDevitation);
         }
 
         private double min = 1;
@@ -81,24 +76,11 @@ namespace ZPO.Core.Conditions
         private double GaussianFunction3D(Vector<double> value)
         {
             var a = 1 / Math.Sqrt(CovarianceMatrix.Determinant() * Math.Pow(2 * Math.PI, 3));
-            var b = -1.0 / 2.0 * (value - MeanVector).ToRowMatrix() * CovarianceMatrix.Inverse() * (value - MeanVector);
+
+            var centeredValues = value - MeanVector;
+            var b = -1.0 / 2.0 * centeredValues.ToRowMatrix() * CovarianceMatrix.Inverse() * centeredValues;
 
             return a * Math.Exp(b[0]);
-        }
-
-        private double ComputeDeviation(List<int> values1, double mean1, List<int> values2, double mean2)
-        {
-            if (values1.Count() != values2.Count())
-                throw new ArgumentException("Arguments have to have same dimensions");
-
-            double accumulator = 0;
-            var size = values1.Count;
-            for (int i = 0; i < size; i++)
-            {
-                accumulator += (values1[i] - mean1) * (values2[i] - mean2);
-            }
-
-            return accumulator / size;
         }
     }
 }
