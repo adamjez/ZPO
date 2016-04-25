@@ -29,8 +29,6 @@ namespace ZPO.App.ViewModels
             // Default tolerance value
             Tolerance = 10;
             NeighborTolerance = 10;
-
-            SelectedColorSpace = ColorSpaces.First();
         }
 
         public ICommand EdgeDetectionCommand { get; private set; }
@@ -95,7 +93,7 @@ namespace ZPO.App.ViewModels
             set { SetProperty(ref _processing, value); }
         }
 
-        ColorSpaces selectedColorSpace;
+        ColorSpaces selectedColorSpace = Core.Colors.ColorSpaces.HSL;
 
         public ColorSpaces SelectedColorSpace
         {

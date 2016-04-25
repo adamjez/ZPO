@@ -2,9 +2,6 @@ using System;
 using System.Collections.Generic;
 using System.Diagnostics;
 using System.Linq;
-using System.Runtime.InteropServices.ComTypes;
-using Windows.UI.ViewManagement;
-using Windows.UI.Xaml.Automation;
 using MathNet.Numerics.LinearAlgebra;
 using ZPO.Core.Colors;
 
@@ -20,21 +17,24 @@ namespace ZPO.Core.Conditions
         public GaussianColorsCondition(List<IColor> compareColors, double tolerance, double neighborTolerance = 0)
             : base(compareColors, tolerance, neighborTolerance)
         {
-            MeanVector = CreateVector.DenseOfArray(
-                new double[]
-                {
-                    compareColors.Select(color => color.GetFirstPart()).Average(),
-                    compareColors.Select(color => color.GetSecondPart()).Average(),
-                    compareColors.Select(color => color.GetThirdPart()).Average()
-                });
+            if (!compareColors.Any())
+            {
+                throw new ArgumentException("compareColors have to have at least 1 color",nameof(compareColors));
+            }
 
-            var colorsMatrix = CreateMatrix.DenseOfColumnArrays(
-                new double[][]
-                {
-                        compareColors.Select(color => color.GetFirstPart() - MeanVector[0]).ToArray(),
-                        compareColors.Select(color => color.GetSecondPart() - MeanVector[1]).ToArray(),
-                        compareColors.Select(color => color.GetThirdPart() - MeanVector[2]).ToArray(),
-                });
+            var partsCount = CompareColors.First().GetParts().Count;
+            MeanVector = CreateVector.Dense<double>(partsCount);
+            for (var i = 0; i < partsCount; ++i)
+            {
+                MeanVector[i] = compareColors.Average(color => color.GetParts()[i]);
+            }
+
+            var colorsMatrix = CreateMatrix.Dense<double>(compareColors.Count, partsCount);
+            for (var i = 0; i < partsCount; ++i)
+            {
+                colorsMatrix.SetColumn(i, CreateVector.DenseOfArray(
+                    compareColors.Select(color => color.GetParts()[i] - MeanVector[i]).ToArray()));
+            }
 
             var covarianceMultiplier = compareColors.Count == 1 ? 0 : 1.0 / (compareColors.Count - 1);
             CovarianceMatrix = covarianceMultiplier * colorsMatrix.Transpose() * colorsMatrix;
@@ -49,14 +49,7 @@ namespace ZPO.Core.Conditions
 
         public override bool Compare(IColor pixelColor, int neighborCount)
         {
-            var result = GaussianFunction(
-                CreateVector.DenseOfArray(
-                    new double[]
-                    {
-                        pixelColor.GetFirstPart(),
-                        pixelColor.GetSecondPart(),
-                        pixelColor.GetThirdPart()
-                    }));
+            var result = GaussianFunction(pixelColor.GetParts());
 
             if (result > max)
             {

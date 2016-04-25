@@ -1,4 +1,5 @@
 ﻿using System;
+using MathNet.Numerics.LinearAlgebra.Double;
 
 namespace ZPO.Core.Colors
 {
@@ -47,10 +48,6 @@ namespace ZPO.Core.Colors
             return (255 << 24) | (red << 16) | (green << 8) | (blue);
         }
 
-        public double GetFirstPart() => L;
-
-        public double GetSecondPart() => A;
-
-        public double GetThirdPart() => B;
+        public Vector GetParts() => DenseVector.OfArray(new double[] {A, B });
     }
 }

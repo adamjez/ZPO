@@ -1,4 +1,6 @@
-﻿namespace ZPO.Core.Colors
+﻿using MathNet.Numerics.LinearAlgebra.Double;
+
+namespace ZPO.Core.Colors
 {
     public class RGBColor : IColor
     {
@@ -22,7 +24,8 @@
                 _green = ToValidColor(value);
             }
         }
-        public int Blue {
+        public int Blue
+        {
             get { return _blue; }
             set
             {
@@ -35,11 +38,7 @@
             return (255 << 24) | (Red << 16) | (Green << 8) | (Blue);
         }
 
-        public double GetFirstPart() => Red;
-
-        public double GetSecondPart() => Green;
-
-        public double GetThirdPart() => Blue;
+        public Vector GetParts() => DenseVector.OfArray(new double[] { Red, Green, Blue });
 
         public bool IsFlagged()
         {
