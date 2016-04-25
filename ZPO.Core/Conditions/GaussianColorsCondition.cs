@@ -14,6 +14,7 @@ namespace ZPO.Core.Conditions
     {
         private readonly double preComputedA;
         private readonly double threshold;
+        private readonly double neighborThreshold;
         protected Matrix<double> CovarianceMatrix;
         protected Vector<double> MeanVector;
         public GaussianColorsCondition(List<IColor> compareColors, double tolerance, double neighborTolerance = 0)
@@ -40,6 +41,7 @@ namespace ZPO.Core.Conditions
 
             preComputedA = 1 / Math.Sqrt(CovarianceMatrix.Determinant() * Math.Pow(2 * Math.PI, 3));
             this.threshold = GaussianFunction(MeanVector) * Math.Pow(2, -tolerance);
+            this.neighborThreshold = threshold * Math.Pow(2, -neighborTolerance);
         }
 
         private double min = 1;
@@ -67,9 +69,9 @@ namespace ZPO.Core.Conditions
             max = Math.Max(result, max);
             min = Math.Min(result, min);
 
-            var multiplier = neighborCount > 0 ? NeighborTolerance : 1;
+            var currentThreshold = neighborCount > 0 ? neighborThreshold : threshold;
 
-            return multiplier * result > threshold;
+            return result > currentThreshold;
         }
 
         private double GaussianFunction(Vector<double> value)

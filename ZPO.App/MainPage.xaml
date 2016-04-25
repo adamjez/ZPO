@@ -64,6 +64,9 @@
                     <ComboBox Header="Color Spaces" x:Name="ColorSpacesComboBox" 
                               SelectedItem="{Binding SelectedColorSpace, Mode=TwoWay}"
                               ItemsSource="{Binding ColorSpaces}" />
+                    <ComboBox Header="Conditions" x:Name="ConditionsComboBox" 
+                              SelectedItem="{Binding SelectedCondition, Mode=TwoWay}"
+                              ItemsSource="{Binding Conditions}" />
                 </StackPanel>
                 <StackPanel Padding="20">
                     <TextBlock Text="History"></TextBlock>

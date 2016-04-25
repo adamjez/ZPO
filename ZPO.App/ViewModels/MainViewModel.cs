@@ -6,6 +6,7 @@ using System.Windows.Input;
 using Windows.UI;
 using Windows.UI.Xaml.Media.Imaging;
 using ZPO.App.Commands;
+using ZPO.App.Enums;
 using ZPO.App.Extensions;
 using ZPO.Core;
 using ZPO.Core.Colors;
@@ -99,16 +100,22 @@ namespace ZPO.App.ViewModels
         public ColorSpaces SelectedColorSpace
         {
             get { return selectedColorSpace; }
-            set
-            {
-                SetProperty(ref selectedColorSpace, value);
-                RaisePropertyChanged("SelectedColorSpace");
-            }
+            set { SetProperty(ref selectedColorSpace, value); }
         }
 
 
         public IEnumerable<ColorSpaces> ColorSpaces 
             => Enum.GetValues(typeof(ColorSpaces)).Cast<ColorSpaces>();
+
+        private ConditionType selectedCondition;
+        public ConditionType SelectedCondition
+        {
+            get { return selectedCondition; }
+            set { SetProperty(ref selectedCondition, value); }
+        }
+
+        public IEnumerable<ConditionType> Conditions
+            => Enum.GetValues(typeof(ConditionType)).Cast<ConditionType>();
 
         public void SetNewImage(WriteableBitmap image)
         {

@@ -17,6 +17,8 @@ namespace ZPO.Core.Colors
                 return ColorExtensions.ToColor(value).ToRGBColor();
             else if(colorSpace == ColorSpaces.HSL)
                 return ColorExtensions.ToColor(value).ToHSLColor();
+            else if (colorSpace == ColorSpaces.CIELab)
+                return ColorExtensions.ToColor(value).ToCIELabColor();
             throw new ArgumentException();
         }
     }

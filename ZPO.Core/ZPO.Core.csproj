@@ -109,6 +109,8 @@
   <ItemGroup>
     <Compile Include="BitmapExtensions.cs" />
     <Compile Include="BufferExtensions.cs" />
+    <Compile Include="Colors\CIELabColor.cs" />
+    <Compile Include="Colors\CIELabColorService.cs" />
     <Compile Include="Colors\ColorCreator.cs" />
     <Compile Include="Colors\ColorExtensions.cs" />
     <Compile Include="Colors\ColorServiceHelper.cs" />

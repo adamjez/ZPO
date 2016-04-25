@@ -71,5 +71,4 @@
             return (color > 255) ? 255 : ((color < 0) ? 0 : color);
         }
     }
- 
 }

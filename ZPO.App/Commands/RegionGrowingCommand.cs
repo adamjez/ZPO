@@ -2,6 +2,7 @@ using System;
 using System.Linq;
 using System.Threading.Tasks;
 using Windows.UI.Xaml.Media.Imaging;
+using ZPO.App.Enums;
 using ZPO.App.ViewModels;
 using ZPO.Core;
 using ZPO.Core.Algorithms;
@@ -40,7 +41,17 @@ namespace ZPO.App.Commands
 
                 var colors = ViewModel.CurrentColors.Select(color => color.ConvertTo(ViewModel.SelectedColorSpace)).ToList();
 
-                process.Conditions.Add(new GaussianColorsCondition(colors, ViewModel.Tolerance, ViewModel.NeighborTolerance));
+                IRegionGrowingCondition condition = null;
+                if (ViewModel.SelectedCondition == ConditionType.GaussianModel)
+                { 
+                    condition = new GaussianColorsCondition(colors, ViewModel.Tolerance, ViewModel.NeighborTolerance);
+                }
+                else if (ViewModel.SelectedCondition == ConditionType.ArithmeticalDistance)
+                {
+                    condition = new ColorsCondition(colors, ViewModel.Tolerance, ViewModel.NeighborTolerance);
+                }
+
+                process.Conditions.Add(condition);
 
                 var result = await process.ProcessAsync(NeighborhoodType.Eight);
 

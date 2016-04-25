@@ -5,6 +5,6 @@ namespace ZPO.Core.Colors
         RGB,
         HSL,
         HSV,
-        CLab,
+        CIELab,
     }
 }

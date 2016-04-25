@@ -24,6 +24,7 @@ namespace ZPO.App
         private void MainPage_Loaded(object sender, Windows.UI.Xaml.RoutedEventArgs e)
         {
             ColorSpacesComboBox.SelectedIndex = 0;
+            ConditionsComboBox.SelectedIndex = 0;
         }
 
         private void ImageView_Tapped(Object sender, TappedRoutedEventArgs e)

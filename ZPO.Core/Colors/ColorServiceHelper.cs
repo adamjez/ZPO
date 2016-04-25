@@ -26,21 +26,18 @@ namespace ZPO.Core.Colors
                 return HSLColorService.Difference((HSLColor)value1, (HSLColor)value2);
             }
 
+            if (value1 is CIELabColor && value2 is CIELabColor)
+            {
+                return CIELabColorService.Difference((CIELabColor)value1, (CIELabColor)value2);
+            }
+
             throw new ArgumentException("Arguments doesn't match");
         }
 
 
 
         private static readonly RGBColorService RGBColorService = new RGBColorService();
-        private static HSLColorService HSLColorService = new HSLColorService();
-        public static RGBColor Add(this RGBColor value1, RGBColor value2)
-        {
-            return RGBColorService.Add(value1, value2);
-        }
-
-        public static int Difference(this RGBColor value1, RGBColor value2)
-        {
-            return RGBColorService.Difference(value1, value2);
-        }
+        private static readonly HSLColorService HSLColorService = new HSLColorService();
+        private static readonly CIELabColorService CIELabColorService = new CIELabColorService();
     }
 }
