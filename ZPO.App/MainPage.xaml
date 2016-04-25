@@ -15,12 +15,12 @@
         </Grid.ColumnDefinitions>
         <Grid>
             <StackPanel>
-                <Button Content="To Gray"
+                <Button Content="GrayScale"
                         Command="{Binding ToGrayCommand}"
                         HorizontalAlignment="Stretch"/>
-                <Button Content="Both Edges"
+                <!--<Button Content="Both Edges"
                         Command="{Binding EdgeDetectionCommand}"
-                        HorizontalAlignment="Stretch"/>
+                        HorizontalAlignment="Stretch"/>-->
                 <Button Content="Blur"
                         Command="{Binding BlurCommand}" 
                         HorizontalAlignment="Stretch"/>
@@ -59,9 +59,11 @@
                             </Rectangle.Fill>
                         </Rectangle>
                     </Grid>
-                    <Slider Value="{Binding Tolerance, Mode=TwoWay}" Minimum="0" Maximum="100"  Header="Tolerance" StepFrequency="2"></Slider>
-                    <Slider Value="{Binding NeighborMultiplier, Mode=TwoWay}" Minimum="0" Maximum="50"  Header="Neighbor Multiplier" StepFrequency="2"></Slider>
-
+                    <Slider Value="{Binding Tolerance, Mode=TwoWay}" Minimum="0" Maximum="100" Header="Tolerance"></Slider>
+                    <Slider Value="{Binding NeighborTolerance, Mode=TwoWay}" Minimum="0" Maximum="100"  Header="Neighbor Tolerance"></Slider>
+                    <ComboBox Header="Color Spaces" x:Name="ColorSpacesComboBox" 
+                              SelectedItem="{Binding SelectedColorSpace, Mode=TwoWay}"
+                              ItemsSource="{Binding ColorSpaces}" />
                 </StackPanel>
                 <StackPanel Padding="20">
                     <TextBlock Text="History"></TextBlock>

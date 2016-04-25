@@ -12,11 +12,12 @@ namespace ZPO.Core.Conditions
 {
     public class GaussianColorsCondition : ColorsCondition
     {
-        private double threshold = 0.005;
+        private readonly double preComputedA;
+        private readonly double threshold;
         protected Matrix<double> CovarianceMatrix;
         protected Vector<double> MeanVector;
-        public GaussianColorsCondition(List<IColor> compareColors, uint tolerance, uint toleranceMultiplier = 1)
-            : base(compareColors, tolerance, toleranceMultiplier)
+        public GaussianColorsCondition(List<IColor> compareColors, double tolerance, double neighborTolerance = 0)
+            : base(compareColors, tolerance, neighborTolerance)
         {
             MeanVector = CreateVector.DenseOfArray(
                 new double[]
@@ -34,15 +35,11 @@ namespace ZPO.Core.Conditions
                         compareColors.Select(color => color.GetThirdPart() - MeanVector[2]).ToArray(),
                 });
 
-            CovarianceMatrix = 1.0 / compareColors.Count * colorsMatrix.Transpose() * colorsMatrix;
+            var covarianceMultiplier = compareColors.Count == 1 ? 0 : 1.0 / (compareColors.Count - 1);
+            CovarianceMatrix = covarianceMultiplier * colorsMatrix.Transpose() * colorsMatrix;
 
-            //for(int i = 0 ; i < CovarianceMatrix.RowCount; ++i)
-            //    for (int j = 0; j < CovarianceMatrix.ColumnCount; ++j)
-            //        CovarianceMatrix[i,j] = Math.Sqrt(CovarianceMatrix[i,j]);
-
-
-            var standardDevitation = MeanVector - CovarianceMatrix.Diagonal();
-            this.threshold = GaussianFunction3D(standardDevitation);
+            preComputedA = 1 / Math.Sqrt(CovarianceMatrix.Determinant() * Math.Pow(2 * Math.PI, 3));
+            this.threshold = GaussianFunction(MeanVector) * Math.Pow(2, -tolerance);
         }
 
         private double min = 1;
@@ -50,7 +47,7 @@ namespace ZPO.Core.Conditions
 
         public override bool Compare(IColor pixelColor, int neighborCount)
         {
-            var result = GaussianFunction3D(
+            var result = GaussianFunction(
                 CreateVector.DenseOfArray(
                     new double[]
                     {
@@ -70,17 +67,17 @@ namespace ZPO.Core.Conditions
             max = Math.Max(result, max);
             min = Math.Min(result, min);
 
-            return result > threshold;
+            var multiplier = neighborCount > 0 ? NeighborTolerance : 1;
+
+            return multiplier * result > threshold;
         }
 
-        private double GaussianFunction3D(Vector<double> value)
+        private double GaussianFunction(Vector<double> value)
         {
-            var a = 1 / Math.Sqrt(CovarianceMatrix.Determinant() * Math.Pow(2 * Math.PI, 3));
-
             var centeredValues = value - MeanVector;
             var b = -1.0 / 2.0 * centeredValues.ToRowMatrix() * CovarianceMatrix.Inverse() * centeredValues;
 
-            return a * Math.Exp(b[0]);
+            return preComputedA * Math.Exp(b[0]);
         }
     }
 }

@@ -1,11 +1,14 @@
 ﻿using System;
+using System.Collections.Generic;
 using System.Collections.ObjectModel;
+using System.Linq;
 using System.Windows.Input;
 using Windows.UI;
 using Windows.UI.Xaml.Media.Imaging;
 using ZPO.App.Commands;
 using ZPO.App.Extensions;
 using ZPO.Core;
+using ZPO.Core.Colors;
 
 namespace ZPO.App.ViewModels
 {
@@ -23,8 +26,10 @@ namespace ZPO.App.ViewModels
             LoadImageCommand = new LoadImageCommand(this);
             SaveImageCommand = new SaveImageCommand(this);
             // Default tolerance value
-            Tolerance = 20;
-            NeighborMultiplier = 10;
+            Tolerance = 10;
+            NeighborTolerance = 10;
+
+            SelectedColorSpace = ColorSpaces.First();
         }
 
         public ICommand EdgeDetectionCommand { get; private set; }
@@ -74,20 +79,36 @@ namespace ZPO.App.ViewModels
             set { SetProperty(ref _tolerance, value); }
         }
 
-        int _neighborMultiplier;
-        public int NeighborMultiplier
+        int _neighborTolerance;
+        public int NeighborTolerance
         {
-            get { return _neighborMultiplier; }
-            set { SetProperty(ref _neighborMultiplier, value); }
+            get { return _neighborTolerance; }
+            set { SetProperty(ref _neighborTolerance, value); }
         }
 
         bool _processing;
+
         public bool Processing
         {
             get { return _processing; }
             set { SetProperty(ref _processing, value); }
         }
 
+        ColorSpaces selectedColorSpace;
+
+        public ColorSpaces SelectedColorSpace
+        {
+            get { return selectedColorSpace; }
+            set
+            {
+                SetProperty(ref selectedColorSpace, value);
+                RaisePropertyChanged("SelectedColorSpace");
+            }
+        }
+
+
+        public IEnumerable<ColorSpaces> ColorSpaces 
+            => Enum.GetValues(typeof(ColorSpaces)).Cast<ColorSpaces>();
 
         public void SetNewImage(WriteableBitmap image)
         {

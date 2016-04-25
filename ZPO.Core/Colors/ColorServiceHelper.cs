@@ -10,6 +10,7 @@ namespace ZPO.Core.Colors
             {
                 return RGBColorService.Add((RGBColor)value1, (RGBColor)value2);
             }
+
             throw new ArgumentException();
         }
 
@@ -20,13 +21,18 @@ namespace ZPO.Core.Colors
                 return RGBColorService.Difference((RGBColor)value1, (RGBColor)value2);
             }
 
-            throw new ArgumentException();
+            if (value1 is HSLColor && value2 is HSLColor)
+            {
+                return HSLColorService.Difference((HSLColor)value1, (HSLColor)value2);
+            }
+
+            throw new ArgumentException("Arguments doesn't match");
         }
 
 
 
         private static readonly RGBColorService RGBColorService = new RGBColorService();
-        //private static CMYKColorService CMYKColorService = new CMYKColorService();
+        private static HSLColorService HSLColorService = new HSLColorService();
         public static RGBColor Add(this RGBColor value1, RGBColor value2)
         {
             return RGBColorService.Add(value1, value2);

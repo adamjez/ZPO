@@ -6,16 +6,6 @@
         private int _green;
         private int _blue;
 
-        public RGBColor()
-        { }
-
-        public RGBColor(int color)
-        {
-            Red += (color >> 16) & 0x000000FF;
-            Green += (color >> 8) & 0x000000FF;
-            Blue += (color) & 0x000000FF;
-        }
-
         public int Red
         {
             get { return _red; }
@@ -45,16 +35,11 @@
             return (255 << 24) | (Red << 16) | (Green << 8) | (Blue);
         }
 
-        public IColor FromInt(int value)
-        {
-            throw new System.NotImplementedException();
-        }
+        public double GetFirstPart() => Red;
 
-        public int GetFirstPart() => Red;
+        public double GetSecondPart() => Green;
 
-        public int GetSecondPart() => Green;
-
-        public int GetThirdPart() => Blue;
+        public double GetThirdPart() => Blue;
 
         public bool IsFlagged()
         {

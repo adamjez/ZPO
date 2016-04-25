@@ -112,11 +112,13 @@
     <Compile Include="Colors\ColorCreator.cs" />
     <Compile Include="Colors\ColorExtensions.cs" />
     <Compile Include="Colors\ColorServiceHelper.cs" />
+    <Compile Include="Colors\HSLColor.cs" />
+    <Compile Include="Colors\HSLColorService.cs" />
     <Compile Include="Colors\IColor.cs" />
     <Compile Include="Colors\IColorService.cs" />
     <Compile Include="Colors\IntColor.cs" />
     <Compile Include="Colors\RGBColorService.cs" />
-    <Compile Include="Colors\ColorTypes.cs" />
+    <Compile Include="Colors\ColorSpaces.cs" />
     <Compile Include="Conditions\ColorCondition.cs" />
     <Compile Include="Conditions\ColorsCondition.cs" />
     <Compile Include="Conditions\GaussianColorsCondition.cs" />

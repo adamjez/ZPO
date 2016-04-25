@@ -28,8 +28,9 @@ namespace ZPO.Core
                 {
                     for (var index = 0; index < h * w; index++)
                     {
-                        var sumColor = new RGBColor(srcContext1.Pixels[index]).Add(new RGBColor(srcContext2.Pixels[index]));
-                        resultContext.Pixels[index] = sumColor.ToInt();
+                        // ToDo: remove it or repair it
+                        //var sumColor = new RGBColor(srcContext1.Pixels[index]).Add(new RGBColor(srcContext2.Pixels[index]));
+                        //resultContext.Pixels[index] = sumColor.ToInt();
                     }
                 }
 

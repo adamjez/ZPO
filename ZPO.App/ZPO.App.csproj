@@ -102,6 +102,7 @@
     <Compile Include="Commands\RegionGrowingCommand.cs" />
     <Compile Include="Commands\SaveImageCommand.cs" />
     <Compile Include="Converters\BoolToOpacityConverter.cs" />
+    <Compile Include="Enums\ConditionType.cs" />
     <Compile Include="Extensions\FileExtensions.cs" />
     <Compile Include="Extensions\ObservableQueue.cs" />
     <Compile Include="MainPage.xaml.cs">

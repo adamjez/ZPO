@@ -11,7 +11,7 @@ namespace ZPO.Core.Algorithms
 {
     public class RegionGrowing
     {
-        private readonly ColorCreator _colorCreator;
+        private readonly ColorCreator colorCreator;
         private readonly byte[] sourceBuffer;
         private readonly int bitmapWidth;
         private readonly int bitmapHeight;
@@ -19,7 +19,7 @@ namespace ZPO.Core.Algorithms
 
         public RegionGrowing(WriteableBitmap bitmap, ColorCreator colorCreator)
         {
-            _colorCreator = colorCreator;
+            this.colorCreator = colorCreator;
             bitmapWidth = bitmap.PixelWidth;
             bitmapHeight = bitmap.PixelHeight;
             pixelsCount = bitmapHeight * bitmapWidth;
@@ -69,7 +69,7 @@ namespace ZPO.Core.Algorithms
                             continue;
                         }
 
-                        var pixelColor = _colorCreator.Create(sourceBuffer.ToInt(realIndex));
+                        var pixelColor = colorCreator.Create(sourceBuffer.ToInt(realIndex));
                         if (Conditions.Any(cond => cond.Compare(pixelColor, resultColor.GetNeighborMultiplier())))
                         {
                             change = true;
@@ -94,7 +94,7 @@ namespace ZPO.Core.Algorithms
                     //    continue;
                     //}
 
-                    //var pixelColor = _colorCreator.Create(sourceBuffer.ToInt(realIndex));
+                    //var pixelColor = colorCreator.Create(sourceBuffer.ToInt(realIndex));
                     //if (Conditions.Any(cond => cond.Compare(pixelColor, resultColor.GetNeighborMultiplier())))
                     //{
                     //    change = true;

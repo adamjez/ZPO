@@ -1,22 +1,22 @@
 ﻿using System;
-using ZPO.Core.Colors;
 
-namespace ZPO.Core
+namespace ZPO.Core.Colors
 {
     public class ColorCreator
     {
-        private readonly ColorTypes colorType;
+        private readonly ColorSpaces colorSpace;
 
-        public ColorCreator(ColorTypes colorType)
+        public ColorCreator(ColorSpaces colorSpace)
         {
-            this.colorType = colorType;
+            this.colorSpace = colorSpace;
         }
 
         public IColor Create(int value)
         {
-            if(colorType == ColorTypes.RGB)
-                return new RGBColor(value);
-
+            if(colorSpace == ColorSpaces.RGB)
+                return ColorExtensions.ToColor(value).ToRGBColor();
+            else if(colorSpace == ColorSpaces.HSL)
+                return ColorExtensions.ToColor(value).ToHSLColor();
             throw new ArgumentException();
         }
     }

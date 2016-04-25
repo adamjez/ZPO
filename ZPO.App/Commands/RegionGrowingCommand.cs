@@ -36,11 +36,11 @@ namespace ZPO.App.Commands
             {
                 ViewModel.Processing = true;
 
-                var process = new RegionGrowing(ViewModel.CurrentImage, new ColorCreator(ColorTypes.RGB));
+                var process = new RegionGrowing(ViewModel.CurrentImage, new ColorCreator(ViewModel.SelectedColorSpace));
 
-                var colors = ViewModel.CurrentColors.Select(color => (IColor)color.ToRGBColor()).ToList();
-                //process.Conditions.Add(new ColorsCondition(colors, (uint)ViewModel.Tolerance, (uint)ViewModel.NeighborMultiplier));
-                process.Conditions.Add(new GaussianColorsCondition(colors, (uint)ViewModel.Tolerance, (uint)ViewModel.NeighborMultiplier));
+                var colors = ViewModel.CurrentColors.Select(color => color.ConvertTo(ViewModel.SelectedColorSpace)).ToList();
+
+                process.Conditions.Add(new GaussianColorsCondition(colors, ViewModel.Tolerance, ViewModel.NeighborTolerance));
 
                 var result = await process.ProcessAsync(NeighborhoodType.Eight);
 

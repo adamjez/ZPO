@@ -6,20 +6,20 @@ namespace ZPO.Core.Conditions
 {
     public class ColorCondition : IRegionGrowingCondition
     {
-        private readonly uint toleranceMultiplier;
+        private readonly double neighborTolerance;
         private readonly IColor compareColor;
-        private readonly uint tolerance;
+        private readonly double tolerance;
 
-        public ColorCondition(IColor compareColor, uint tolerance, uint toleranceMultiplier = 1)
+        public ColorCondition(IColor compareColor, double tolerance, double neighborTolerance = 0)
         {
             this.compareColor = compareColor;
             this.tolerance = tolerance;
-            this.toleranceMultiplier = toleranceMultiplier;
+            this.neighborTolerance = neighborTolerance;
         }
 
         public bool Compare(IColor pixelColor, int neighborCount)
         {
-            var multiplier = neighborCount > 0 ? toleranceMultiplier : 1;
+            var multiplier = neighborCount > 0 ? neighborTolerance : 1;
             return Math.Abs(pixelColor.Difference(compareColor)) <= tolerance*multiplier;
         }
     }
