@@ -11,7 +11,8 @@ namespace ZPO.Core.Colors
 
         public int Difference(CIELabColor value1, CIELabColor value2)
         {
-            throw new NotImplementedException();
+            return (int)(Math.Abs(value1.A - value2.A) + Math.Abs(value1.B - value2.B)+
+                Math.Abs(value1.L - value2.L)/2);
         }
     }
 }

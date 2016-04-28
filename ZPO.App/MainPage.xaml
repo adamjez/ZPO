@@ -39,11 +39,13 @@
                                 SelectionChanged="Selector_OnSelectionChanged">
                         <GridView.ItemTemplate>
                             <DataTemplate>
-                                <Rectangle Width="20" Height="20">
-                                    <Rectangle.Fill>
-                                        <SolidColorBrush Color="{Binding}" />
-                                    </Rectangle.Fill>
-                                </Rectangle>
+                                <Grid Width="20" Height="20" BorderBrush="Black" BorderThickness="1">
+                                    <Rectangle>
+                                        <Rectangle.Fill>
+                                            <SolidColorBrush Color="{Binding}" />
+                                        </Rectangle.Fill>
+                                    </Rectangle>
+                                </Grid>
                             </DataTemplate>
                         </GridView.ItemTemplate>
                     </GridView>
@@ -67,6 +69,9 @@
                     <ComboBox Header="Conditions" x:Name="ConditionsComboBox" 
                               SelectedItem="{Binding SelectedCondition, Mode=TwoWay}"
                               ItemsSource="{Binding Conditions}"/>
+                    <ComboBox Header="Path Methods" x:Name="PathMethodComboBox" 
+                              SelectedItem="{Binding PathMethod, Mode=TwoWay}"
+                              ItemsSource="{Binding PathMethods}"/>
                 </StackPanel>
                 <StackPanel Padding="20">
                     <TextBlock Text="History"></TextBlock>

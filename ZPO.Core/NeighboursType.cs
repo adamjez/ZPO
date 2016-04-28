@@ -2,6 +2,7 @@
 {
     public enum NeighborhoodType
     {
+        None,
         Four,
         Eight
     }

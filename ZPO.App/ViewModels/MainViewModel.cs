@@ -115,6 +115,16 @@ namespace ZPO.App.ViewModels
         public IEnumerable<ConditionType> Conditions
             => Enum.GetValues(typeof(ConditionType)).Cast<ConditionType>();
 
+        private PathMethods pathMethod;
+        public PathMethods PathMethod
+        {
+            get { return pathMethod; }
+            set { SetProperty(ref pathMethod, value); }
+        }
+
+        public IEnumerable<PathMethods> PathMethods
+            => Enum.GetValues(typeof(PathMethods)).Cast<PathMethods>();
+
         public void SetNewImage(WriteableBitmap image)
         {
             if(CurrentImage != null)

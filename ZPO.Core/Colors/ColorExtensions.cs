@@ -155,6 +155,18 @@ namespace ZPO.Core.Colors
             return (color.GetNeighborMultiplier() + 1 << 24) | 0;
         }
 
+        public static int AddSeenFlag()
+        {
+            return (9 << 24) | 0;
+        }
+
+        public static bool IsSeenFlagged(this int color)
+        {
+            var alpha = (color >> 24) & 0x000000FF;
+
+            return alpha == 9;
+        }
+
         public static int GetNeighborMultiplier(this int color)
         {
             return (color >> 24) & 0x000000FF;
