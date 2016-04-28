@@ -14,25 +14,33 @@
             <ColumnDefinition Width="4*"/>
         </Grid.ColumnDefinitions>
         <Grid>
+            <Grid.RowDefinitions>
+                <RowDefinition Height="Auto"/>
+                <RowDefinition Height="*"/>
+            </Grid.RowDefinitions>
             <StackPanel>
+                <Button Content="Process"
+                        Command="{Binding RegionGrowingCommand}"
+                        HorizontalAlignment="Stretch"/>
                 <Button Content="GrayScale"
                         Command="{Binding ToGrayCommand}"
-                        HorizontalAlignment="Stretch"/>
+                        HorizontalAlignment="Stretch"
+                        Visibility="{Binding MoreActions, Converter={StaticResource BoolToVisibilityConverter}}"/>
                 <!--<Button Content="Both Edges"
                         Command="{Binding EdgeDetectionCommand}"
                         HorizontalAlignment="Stretch"/>-->
                 <Button Content="Blur"
                         Command="{Binding BlurCommand}" 
-                        HorizontalAlignment="Stretch"/>
+                        HorizontalAlignment="Stretch"
+                        Visibility="{Binding MoreActions, Converter={StaticResource BoolToVisibilityConverter}}"/>
                 <Button Content="Dilate"
                         Command="{Binding DilateCommand}" 
-                        HorizontalAlignment="Stretch"/>
+                        HorizontalAlignment="Stretch"
+                        Visibility="{Binding MoreActions, Converter={StaticResource BoolToVisibilityConverter}}"/>
                 <Button Content="Erode"
                         Command="{Binding ErodeCommand}" 
-                        HorizontalAlignment="Stretch"/>
-                <Button Content="Region Growing"
-                        Command="{Binding RegionGrowingCommand}"
-                        HorizontalAlignment="Stretch"/>
+                        HorizontalAlignment="Stretch"
+                        Visibility="{Binding MoreActions, Converter={StaticResource BoolToVisibilityConverter}}"/>
                 <StackPanel Padding="20">
                     <TextBlock Text="Selected Colors"></TextBlock>
                     <GridView ItemsSource="{Binding CurrentColors}" x:Name="ColorsGridView" 
@@ -49,7 +57,7 @@
                             </DataTemplate>
                         </GridView.ItemTemplate>
                     </GridView>
-            
+
                     <TextBlock Text="Hover Color"></TextBlock>
                     <Grid Height="20" VerticalAlignment="Stretch" BorderBrush="Gray" BorderThickness="1">
                         <TextBlock Text="None" 
@@ -73,18 +81,21 @@
                               SelectedItem="{Binding PathMethod, Mode=TwoWay}"
                               ItemsSource="{Binding PathMethods}"/>
                 </StackPanel>
-                <StackPanel Padding="20">
-                    <TextBlock Text="History"></TextBlock>
-                    <GridView ItemsSource="{Binding ImageHistory}">
-                        <GridView.ItemTemplate>
-                            <DataTemplate>
-                                <Image Source="{Binding}" MaxWidth="100" Tapped="HistoryImage_OnTapped"></Image>
-                            </DataTemplate>
-                        </GridView.ItemTemplate>
-                    </GridView>
-                </StackPanel>
             </StackPanel>
-
+            <Grid Grid.Row="1" Padding="20">
+                <Grid.RowDefinitions>
+                    <RowDefinition Height="Auto"/>
+                    <RowDefinition/>
+                </Grid.RowDefinitions>
+                <TextBlock Text="History"></TextBlock>
+                <GridView Grid.Row="1" ItemsSource="{Binding ImageHistory}">
+                    <GridView.ItemTemplate>
+                        <DataTemplate>
+                            <Image Source="{Binding}" MaxWidth="100" Tapped="HistoryImage_OnTapped"></Image>
+                        </DataTemplate>
+                    </GridView.ItemTemplate>
+                </GridView>
+            </Grid>
         </Grid>
         <Grid Grid.Column="1">
             <Image x:Name="ImageView" Source="{Binding CurrentImage}" 
@@ -97,6 +108,7 @@
         <CommandBar Grid.Column="0" VerticalAlignment="Bottom">
             <AppBarButton Icon="BrowsePhotos" Label="Load Image" Command="{Binding LoadImageCommand}"/>
             <AppBarButton Icon="Save" Label="Save Image" Command="{Binding SaveImageCommand}"/>
+            <AppBarToggleButton Icon="Edit"  Label="More Actions" IsChecked="{Binding MoreActions, Mode=TwoWay}" />
         </CommandBar>
     </Grid>
 </Page>

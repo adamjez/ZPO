@@ -9,13 +9,13 @@ namespace ZPO.App.Commands
 {
     public class LoadImageCommand : ICommand
     {
-        private readonly MainViewModel _viewModel;
+        private readonly MainViewModel viewModel;
 
         public event EventHandler CanExecuteChanged { add { } remove { } }
 
         public LoadImageCommand(MainViewModel viewModel)
         {
-            _viewModel = viewModel;
+            this.viewModel = viewModel;
         }
 
         public Boolean CanExecute(Object parameter) => true;
@@ -35,8 +35,9 @@ namespace ZPO.App.Commands
 
             if (file != null)
             {
-                _viewModel.CurrentColors.Clear();
-                _viewModel.SetNewImage(await file.AsWriteableImageAsync());
+                viewModel.CurrentColors.Clear();
+                viewModel.SourceImage = await file.AsWriteableImageAsync();
+                viewModel.SetNewImage(viewModel.SourceImage);
             }
         }
     }

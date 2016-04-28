@@ -10,5 +10,6 @@
     <Application.Resources>
         <viewModels:MainViewModel x:Key="MainViewModel" />
         <converters:BoolToOpacityConverter x:Key="BoolToOpacityConverter" />
+        <converters:BoolToVisibilityConverter x:Key="BoolToVisibilityConverter"/>
     </Application.Resources>
 </Application>

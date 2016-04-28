@@ -42,10 +42,10 @@ namespace ZPO.App.Commands
 
                 ViewModel.Processing = true;
 
-                IRegionGrowing process = new RegionGrowing2(ViewModel.CurrentImage, new ColorCreator(ViewModel.SelectedColorSpace));
+                IRegionGrowing process = new RegionGrowing2(ViewModel.SourceImage, new ColorCreator(ViewModel.SelectedColorSpace));
                 if (ViewModel.PathMethod == PathMethods.Base)
                 {
-                    process = new RegionGrowing(ViewModel.CurrentImage, new ColorCreator(ViewModel.SelectedColorSpace));
+                    process = new RegionGrowing(ViewModel.SourceImage, new ColorCreator(ViewModel.SelectedColorSpace));
                 }
 
                 var colors = ViewModel.CurrentColors.Select(color => color.ConvertTo(ViewModel.SelectedColorSpace)).ToList();

@@ -56,6 +56,8 @@ namespace ZPO.App.ViewModels
             private set { SetProperty(ref _currentImage, value); }
         }
 
+        public WriteableBitmap SourceImage { get; set; }
+
         ObservableCollection<Color> currentColors
            = new ObservableCollection<Color>();
         public ObservableCollection<Color> CurrentColors
@@ -116,6 +118,7 @@ namespace ZPO.App.ViewModels
             => Enum.GetValues(typeof(ConditionType)).Cast<ConditionType>();
 
         private PathMethods pathMethod;
+
         public PathMethods PathMethod
         {
             get { return pathMethod; }
@@ -124,6 +127,13 @@ namespace ZPO.App.ViewModels
 
         public IEnumerable<PathMethods> PathMethods
             => Enum.GetValues(typeof(PathMethods)).Cast<PathMethods>();
+
+        private bool moreActions;
+        public bool MoreActions
+        {
+            get { return moreActions; }
+            set { SetProperty(ref moreActions, value); }
+        }
 
         public void SetNewImage(WriteableBitmap image)
         {
