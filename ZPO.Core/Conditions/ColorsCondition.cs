@@ -20,10 +20,8 @@ namespace ZPO.Core.Conditions
 
         public virtual bool Compare(IColor pixelColor, int neighborCount)
         {
-            var multiplier = neighborCount > 0 ? NeighborTolerance : 1;
-
             return CompareColors
-                .Any(color => Math.Abs(pixelColor.Difference(color)) <= Tolerance*multiplier);
+                .Any(color => Math.Abs(pixelColor.Difference(color)) <= Tolerance + Math.Min(neighborCount, 1) * NeighborTolerance);
         }
     }
 }

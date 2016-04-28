@@ -73,6 +73,6 @@ namespace ZPO.Core.Colors
             return (255 << 24) | (red << 16) | (green << 8) | (blue);
         }
 
-        public Vector GetParts() => DenseVector.OfArray(new double[] { Hue * 255, Saturation * 255, Lightness * 255 });
+        public Vector GetParts() => DenseVector.OfArray(new double[] { Hue * 255, Saturation * 255/*, Lightness * 255*/ });
     }
 }

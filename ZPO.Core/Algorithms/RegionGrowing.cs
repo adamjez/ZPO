@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Diagnostics;
 using System.Linq;
 using System.Runtime.CompilerServices;
 using System.Threading.Tasks;
@@ -9,7 +10,13 @@ using ZPO.Core.Conditions;
 
 namespace ZPO.Core.Algorithms
 {
-    public class RegionGrowing
+    public interface IRegionGrowing
+    {
+        List<IRegionGrowingCondition> Conditions { get; }
+        Task<WriteableBitmap> ProcessAsync(NeighborhoodType type);
+    }
+
+    public class RegionGrowing : IRegionGrowing
     {
         private readonly ColorCreator colorCreator;
         private readonly byte[] sourceBuffer;
@@ -46,67 +53,44 @@ namespace ZPO.Core.Algorithms
             Array.Clear(resultBuffer, 0, capacity);
 
             var change = true;
-            //var iterations = 0;
+            var iterations = 0;
+            var maxIterations = type == NeighborhoodType.None? 0 : 10;
             while (change)
             {
-                //iterations++;
-                //if (iterations == 10)
+                iterations++;
+                //if (iterations == maxIterations)
                 //    break;
                 change = false;
-                //var currentIndex = 0;
+
                 //Parallel.For(0, bitmapHeight, y =>
                 for (int y = 0; y < bitmapHeight; y++)
+            {
+                for (int x = 0; x < bitmapWidth; x++)
                 {
-                    for (int x = 0; x < bitmapWidth; x++)
+                    var currentIndex = y*bitmapWidth + x;
+                    var realIndex = currentIndex*4;
+
+                    var resultColor = resultBuffer.ToInt(realIndex);
+
+                    if (resultColor.IsFlagged())
                     {
-                        var currentIndex = (y*bitmapWidth + x);
-                        var realIndex = currentIndex * 4;
+                        continue;
+                    }
 
-                        var resultColor = resultBuffer.ToInt(realIndex);
+                    var pixelColor = colorCreator.Create(sourceBuffer.ToInt(realIndex));
+                    if (Conditions.Any(cond => cond.Compare(pixelColor, resultColor.GetNeighborMultiplier())))
+                    {
+                        change = true;
 
-                        if (resultColor.IsFlagged())
-                        {
-                            continue;
-                        }
+                        resultColor = ColorExtensions.Flag();
+                        resultColor.ToArray(resultBuffer, realIndex);
 
-                        var pixelColor = colorCreator.Create(sourceBuffer.ToInt(realIndex));
-                        if (Conditions.Any(cond => cond.Compare(pixelColor, resultColor.GetNeighborMultiplier())))
-                        {
-                            change = true;
-
-                            resultColor = ColorExtensions.Flag();
-                            resultColor.ToArray(resultBuffer, realIndex);
-
-                            AddNeighbor(currentIndex, resultBuffer, type);
-                        }
+                        AddNeighbor(currentIndex, resultBuffer, type);
                     }
                 }
-                //while (currentIndex < pixelsCount)
-                {
-                    //var realIndex = currentIndex * 4;
-
-                    //++currentIndex;
-
-                    //var resultColor = resultBuffer.ToInt(realIndex);
-
-                    //if (resultColor.IsFlagged())
-                    //{
-                    //    continue;
-                    //}
-
-                    //var pixelColor = colorCreator.Create(sourceBuffer.ToInt(realIndex));
-                    //if (Conditions.Any(cond => cond.Compare(pixelColor, resultColor.GetNeighborMultiplier())))
-                    //{
-                    //    change = true;
-
-                    //    resultColor = ColorExtensions.Flag();
-                    //    resultColor.ToArray(resultBuffer, realIndex);
-
-                    //    AddNeighbor(currentIndex, resultBuffer, type);
-                    //}
-                }
             }
-
+            }
+            Debug.WriteLine($"Iterations: {iterations}");
             return resultBuffer;
         }
 

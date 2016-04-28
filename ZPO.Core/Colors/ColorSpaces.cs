@@ -4,7 +4,6 @@ namespace ZPO.Core.Colors
     {
         RGB,
         HSL,
-        HSV,
         CIELab,
     }
 }

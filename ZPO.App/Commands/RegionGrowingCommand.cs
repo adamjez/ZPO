@@ -1,4 +1,5 @@
 using System;
+using System.Diagnostics;
 using System.Linq;
 using System.Threading.Tasks;
 using Windows.UI.Xaml.Media.Imaging;
@@ -35,15 +36,23 @@ namespace ZPO.App.Commands
         {
             if (CanExecute())
             {
+                Stopwatch sw = new Stopwatch();
+
+                sw.Start();
+
                 ViewModel.Processing = true;
 
-                var process = new RegionGrowing(ViewModel.CurrentImage, new ColorCreator(ViewModel.SelectedColorSpace));
+                IRegionGrowing process = new RegionGrowing2(ViewModel.CurrentImage, new ColorCreator(ViewModel.SelectedColorSpace));
+                if (ViewModel.PathMethod == PathMethods.Base)
+                {
+                    process = new RegionGrowing(ViewModel.CurrentImage, new ColorCreator(ViewModel.SelectedColorSpace));
+                }
 
                 var colors = ViewModel.CurrentColors.Select(color => color.ConvertTo(ViewModel.SelectedColorSpace)).ToList();
 
                 IRegionGrowingCondition condition = null;
                 if (ViewModel.SelectedCondition == ConditionType.GaussianModel)
-                { 
+                {
                     condition = new GaussianColorsCondition(colors, ViewModel.Tolerance, ViewModel.NeighborTolerance);
                 }
                 else if (ViewModel.SelectedCondition == ConditionType.ArithmeticalDistance)
@@ -52,12 +61,16 @@ namespace ZPO.App.Commands
                 }
 
                 process.Conditions.Add(condition);
-
-                var result = await process.ProcessAsync(NeighborhoodType.Eight);
+   
+                var result = await process.ProcessAsync(NeighborhoodType.Four);
 
                 ViewModel.SetNewImage(result);
 
                 ViewModel.Processing = false;
+
+                sw.Stop();
+
+                Debug.WriteLine("Elapsed={0}", sw.Elapsed);
             }
         }
     }
