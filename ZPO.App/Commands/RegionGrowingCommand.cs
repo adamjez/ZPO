@@ -42,22 +42,29 @@ namespace ZPO.App.Commands
 
                 ViewModel.Processing = true;
 
-                IRegionGrowing process = new RegionGrowing2(ViewModel.SourceImage, new ColorCreator(ViewModel.SelectedColorSpace));
+                IRegionGrowing process = new RegionGrowing2(ViewModel.SourceImage, 
+                    new ColorCreator(ViewModel.SelectedColorSpace));
+
                 if (ViewModel.PathMethod == PathMethods.Base)
                 {
-                    process = new RegionGrowing(ViewModel.SourceImage, new ColorCreator(ViewModel.SelectedColorSpace));
+                    process = new RegionGrowing(ViewModel.SourceImage, 
+                        new ColorCreator(ViewModel.SelectedColorSpace));
                 }
 
-                var colors = ViewModel.CurrentColors.Select(color => color.ConvertTo(ViewModel.SelectedColorSpace)).ToList();
+                var colors = ViewModel.CurrentColors
+                    .Select(color => color.ConvertTo(ViewModel.SelectedColorSpace))
+                    .ToList();
 
-                IRegionGrowingCondition condition = null;
+                IColorCondition condition = null;
                 if (ViewModel.SelectedCondition == ConditionType.GaussianModel)
                 {
-                    condition = new GaussianColorsCondition(colors, ViewModel.Tolerance, ViewModel.NeighborTolerance);
+                    condition = new GaussianColorsCondition(colors, ViewModel.Tolerance, 
+                        ViewModel.NeighborTolerance);
                 }
                 else if (ViewModel.SelectedCondition == ConditionType.ArithmeticalDistance)
                 {
-                    condition = new ColorsCondition(colors, ViewModel.Tolerance, ViewModel.NeighborTolerance);
+                    condition = new ColorsCondition(colors, ViewModel.Tolerance, 
+                        ViewModel.NeighborTolerance, ViewModel.DynamicThreshold);
                 }
 
                 process.Conditions.Add(condition);

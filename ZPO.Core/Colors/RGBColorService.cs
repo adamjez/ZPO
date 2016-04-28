@@ -16,7 +16,9 @@ namespace ZPO.Core.Colors
 
         public int Difference(RGBColor value1, RGBColor value2)
         {
-            return Math.Abs(value1.Red - value2.Red) + Math.Abs(value1.Green - value2.Green) + Math.Abs(value1.Blue - value2.Blue);
+            return Math.Abs(value1.Red - value2.Red) + 
+                Math.Abs(value1.Green - value2.Green) + 
+                Math.Abs(value1.Blue - value2.Blue);
         }
     }
 }

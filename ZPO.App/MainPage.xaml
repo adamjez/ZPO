@@ -69,8 +69,12 @@
                             </Rectangle.Fill>
                         </Rectangle>
                     </Grid>
-                    <Slider Value="{Binding Tolerance, Mode=TwoWay}" Minimum="0" Maximum="100" Header="Tolerance"></Slider>
-                    <Slider Value="{Binding NeighborTolerance, Mode=TwoWay}" Minimum="0" Maximum="100"  Header="Neighbor Tolerance"></Slider>
+                    <ToggleSwitch Header="Dynamic Threshold" IsOn="{Binding DynamicThreshold, Mode=TwoWay}"/>
+                    <Slider Value="{Binding Tolerance, Mode=TwoWay}" Minimum="0" Maximum="100" Header="Tolerance"
+                            Visibility="{Binding DynamicThreshold, Converter={StaticResource BoolToVisibilityConverter}, ConverterParameter=I}"/>
+                    <Slider Value="{Binding NeighborTolerance, Mode=TwoWay}" Minimum="0" Maximum="100"  
+                            Header="Neighbor Tolerance"
+                            Visibility="{Binding DynamicThreshold, Converter={StaticResource BoolToVisibilityConverter}, ConverterParameter=I}"/>
                     <ComboBox Header="Color Spaces" x:Name="ColorSpacesComboBox" 
                               SelectedItem="{Binding SelectedColorSpace, Mode=TwoWay}"
                               ItemsSource="{Binding ColorSpaces}" />

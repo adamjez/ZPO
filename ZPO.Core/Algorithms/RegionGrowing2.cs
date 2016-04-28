@@ -25,10 +25,10 @@ namespace ZPO.Core.Algorithms
             bitmapHeight = bitmap.PixelHeight;
             pixelsCount = bitmapHeight * bitmapWidth;
             sourceBuffer = bitmap.ToByteArray();
-            Conditions = new List<IRegionGrowingCondition>();
+            Conditions = new List<IColorCondition>();
         }
 
-        public List<IRegionGrowingCondition> Conditions { get; private set; }
+        public List<IColorCondition> Conditions { get; private set; }
 
         public async Task<WriteableBitmap> ProcessAsync(NeighborhoodType type)
         {
@@ -70,7 +70,7 @@ namespace ZPO.Core.Algorithms
 
                         var pixelColor = colorCreator.Create(sourceBuffer.ToInt(realIndex));
                         var hasNeighbor = stack.Count > 0 ? 1 : 0;
-                        if (Conditions.Any(cond => cond.Compare(pixelColor, hasNeighbor)))
+                        if (Conditions.Any(cond => cond.Compare(pixelColor, hasNeighbor, y / (double)bitmapHeight)))
                         {
                             resultColor = ColorExtensions.Flag();
                             resultColor.ToArray(resultBuffer, realIndex);

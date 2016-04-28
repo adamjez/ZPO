@@ -9,6 +9,11 @@ namespace ZPO.App.Converters
         public object Convert(object value, Type targetType, object parameter, string language)
         {
             var val = (bool)value;
+            var param = (string)parameter;
+
+            // Inverse
+            if (param != null && param == "I")
+                val = !val;
 
             return val ? Visibility.Visible : Visibility.Collapsed;
         }

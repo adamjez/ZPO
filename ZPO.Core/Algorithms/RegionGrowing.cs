@@ -12,7 +12,7 @@ namespace ZPO.Core.Algorithms
 {
     public interface IRegionGrowing
     {
-        List<IRegionGrowingCondition> Conditions { get; }
+        List<IColorCondition> Conditions { get; }
         Task<WriteableBitmap> ProcessAsync(NeighborhoodType type);
     }
 
@@ -31,10 +31,10 @@ namespace ZPO.Core.Algorithms
             bitmapHeight = bitmap.PixelHeight;
             pixelsCount = bitmapHeight * bitmapWidth;
             sourceBuffer = bitmap.ToByteArray();
-            Conditions = new List<IRegionGrowingCondition>();
+            Conditions = new List<IColorCondition>();
         }
 
-        public List<IRegionGrowingCondition> Conditions { get; private set; }
+        public List<IColorCondition> Conditions { get; private set; }
 
         public async Task<WriteableBitmap> ProcessAsync(NeighborhoodType type)
         {

@@ -12,8 +12,8 @@ namespace ZPO.Core.Colors
         public int Difference(HSLColor value1, HSLColor value2)
         {
             return (int)(((Math.Abs(value1.Hue - value2.Hue) +
-                Math.Abs(value1.Saturation - value2.Saturation) / 2 +
-                Math.Abs(value1.Lightness - value2.Lightness) / 4) * 255)*12);
+                Math.Abs(value1.Saturation - value2.Saturation)  +
+                Math.Abs(value1.Lightness - value2.Lightness) / 2) * 255) * 2);
 
         }
     }

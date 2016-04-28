@@ -125,7 +125,7 @@
     <Compile Include="Conditions\ColorCondition.cs" />
     <Compile Include="Conditions\ColorsCondition.cs" />
     <Compile Include="Conditions\GaussianColorsCondition.cs" />
-    <Compile Include="Conditions\IRegionGrowingCondition.cs" />
+    <Compile Include="Conditions\IColorCondition.cs" />
     <Compile Include="ImageBlur.cs" />
     <Compile Include="ImageEdgeDetection.cs" />
     <Compile Include="Colors\RGBColor.cs" />

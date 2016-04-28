@@ -4,7 +4,7 @@ using ZPO.Core.Colors;
 
 namespace ZPO.Core.Conditions
 {
-    public class ColorCondition : IRegionGrowingCondition
+    public class ColorCondition : IColorCondition
     {
         private readonly double neighborTolerance;
         private readonly IColor compareColor;
@@ -17,7 +17,7 @@ namespace ZPO.Core.Conditions
             this.neighborTolerance = neighborTolerance;
         }
 
-        public bool Compare(IColor pixelColor, int neighborCount)
+        public bool Compare(IColor pixelColor, int neighborCount, double row = -1)
         {
             var multiplier = neighborCount > 0 ? neighborTolerance : 1;
             return Math.Abs(pixelColor.Difference(compareColor)) <= tolerance*multiplier;

@@ -47,7 +47,7 @@ namespace ZPO.Core.Conditions
         private double min = 1;
         private double max = 0;
 
-        public override bool Compare(IColor pixelColor, int neighborCount)
+        public override bool Compare(IColor pixelColor, int neighborCount, double row = -1)
         {
             var result = GaussianFunction(pixelColor.GetParts());
 
