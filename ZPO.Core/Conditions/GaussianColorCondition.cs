@@ -12,6 +12,7 @@ namespace ZPO.Core.Conditions
     {
         private double threshold;
         private double neighborThreshold;
+        private double baseThreshold;
         private readonly int partsCount;
 
         // 1D normal distribution
@@ -26,8 +27,8 @@ namespace ZPO.Core.Conditions
 
 
         public GaussianColorCondition(IColor compareColor, double tolerance, double neighborTolerance,
-            WriteableBitmap image, ColorCreator colorCreator)
-            : base(compareColor, tolerance, neighborTolerance)
+            WriteableBitmap image, ColorCreator colorCreator, bool dynamicThreshold = false)
+            : base(compareColor, tolerance, neighborTolerance, dynamicThreshold)
         {
             partsCount = compareColor.GetParts().Count;
 
@@ -63,11 +64,12 @@ namespace ZPO.Core.Conditions
             }
 
             // Find local maximum and local minimum from compare color position
-            var result = GetMeanAndDeviation(histogram, (int)CompareColor.GetParts()[0]);
+            var result = GetMeanAndDeviation(histogram, (int)Color.GetParts()[0]);
 
             mean = result.Item1;
             deviation = result.Item2;
-            threshold = GaussianFunction1D(result.Item2) * Math.Pow(2, -Tolerance);
+            baseThreshold = GaussianFunction1D(result.Item2);
+            threshold = baseThreshold * Math.Pow(2, -Tolerance);
             neighborThreshold = threshold * Math.Pow(2, -NeighborTolerance);
         }
 
@@ -91,9 +93,9 @@ namespace ZPO.Core.Conditions
             }
 
             // Find local maximum and local minimum from compare color position
-            var result1 = GetMeanAndDeviation(histogram.Column(0), (int)CompareColor.GetParts()[0]);
-            var result2 = GetMeanAndDeviation(histogram.Column(1), (int)CompareColor.GetParts()[1]);
-            var result3 = GetMeanAndDeviation(histogram.Column(2), (int)CompareColor.GetParts()[2]);
+            var result1 = GetMeanAndDeviation(histogram.Column(0), (int)Color.GetParts()[0]);
+            var result2 = GetMeanAndDeviation(histogram.Column(1), (int)Color.GetParts()[1]);
+            var result3 = GetMeanAndDeviation(histogram.Column(2), (int)Color.GetParts()[2]);
 
             meanVector = CreateVector.DenseOfArray(new[] { result1.Item1, result2.Item1, result3.Item1 });
             covarianceMatrix = CreateMatrix.DenseOfDiagonalArray(
@@ -112,7 +114,8 @@ namespace ZPO.Core.Conditions
                 result1.Item2, result2.Item2, result3.Item2
             });
 
-            threshold = GaussianFunction(minimumVector) * Math.Pow(2, -Tolerance);
+            baseThreshold = GaussianFunction(minimumVector);
+            threshold = baseThreshold * Math.Pow(2, -Tolerance);
             neighborThreshold = threshold * Math.Pow(2, -NeighborTolerance);
         }
 
@@ -205,7 +208,20 @@ namespace ZPO.Core.Conditions
                 result = GaussianFunction(pixelColor.GetParts());
             }
 
-            var currentThreshold = neighborCount > 0 ? neighborThreshold : threshold;
+            var currentThreshold = 0.0;
+            if (DynamicThreshold)
+            {
+                currentThreshold = baseThreshold * Math.Pow(2, -GetMultiplier(rowRatio));
+                if (neighborCount > 0)
+                {
+                    currentThreshold = currentThreshold * Math.Pow(2, -NeighborTolerance);
+                }
+            }
+            else
+            {
+                currentThreshold = neighborCount > 0 ? neighborThreshold : threshold;
+            }
+
 
             return result >= currentThreshold;
         }

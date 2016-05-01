@@ -1,4 +1,5 @@
 using System;
+using System.Collections.Generic;
 using System.Diagnostics;
 using System.Linq;
 using System.Threading.Tasks;
@@ -57,29 +58,14 @@ namespace ZPO.App.Commands
                     .ToList();
 
                 IColorCondition condition = null;
-                if (ViewModel.SelectedCondition == ConditionType.NormalDistributionFromColors)
+                try
                 {
-                    condition = new GaussianColorsCondition(colors, ViewModel.Tolerance,
-                        ViewModel.NeighborTolerance);
+                    condition = ResolveConditionByType(colors);
                 }
-                else if (ViewModel.SelectedCondition == ConditionType.ArithmeticalDistance)
+                catch (CreateModelException exc)
                 {
-                    condition = new ColorsCondition(colors, ViewModel.Tolerance,
-                        ViewModel.NeighborTolerance, ViewModel.DynamicThreshold);
-                }
-                else if (ViewModel.SelectedCondition == ConditionType.NormalDistributionFromColor)
-                {
-                    try
-                    {
-                        condition = new GaussianColorCondition(colors.First(), ViewModel.Tolerance,
-                            ViewModel.NeighborTolerance, ViewModel.SourceImage,
-                            new ColorCreator(ViewModel.SelectedColorSpace));
-                    }
-                    catch (CreateModelException exc)
-                    {
-                        ViewModel.ResultMessage = "Couldn't create model: " + exc.Message;
-                        sucess = false;
-                    }
+                    ViewModel.ResultMessage = "Couldn't create model: " + exc.Message;
+                    sucess = false;
                 }
 
                 if (sucess)
@@ -99,6 +85,28 @@ namespace ZPO.App.Commands
 
                 Debug.WriteLine("Elapsed={0}", sw.Elapsed);
             }
+        }
+
+        private IColorCondition ResolveConditionByType(List<IColor> colors)
+        {
+            IColorCondition condition = null;
+            if (ViewModel.SelectedCondition == ConditionType.NormalDistributionFromColors)
+            {
+                condition = new GaussianColorsCondition(colors, ViewModel.Tolerance,
+                    ViewModel.NeighborTolerance, ViewModel.DynamicThreshold);
+            }
+            else if (ViewModel.SelectedCondition == ConditionType.ArithmeticalDistance)
+            {
+                condition = new ColorsCondition(colors, ViewModel.Tolerance,
+                    ViewModel.NeighborTolerance, ViewModel.DynamicThreshold);
+            }
+            else if (ViewModel.SelectedCondition == ConditionType.NormalDistributionFromColor)
+            {
+                condition = new GaussianColorCondition(colors.First(), ViewModel.Tolerance,
+                    ViewModel.NeighborTolerance, ViewModel.SourceImage,
+                    new ColorCreator(ViewModel.SelectedColorSpace), ViewModel.DynamicThreshold);
+            }
+            return condition;
         }
     }
 }

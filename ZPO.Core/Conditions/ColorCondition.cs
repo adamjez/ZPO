@@ -1,26 +1,19 @@
-using System;
-using ZPO.Core.Algorithms;
 using ZPO.Core.Colors;
 
 namespace ZPO.Core.Conditions
 {
-    public class ColorCondition : IColorCondition
+    public abstract class ColorCondition : BaseCondition
     {
-        protected readonly double NeighborTolerance;
-        protected readonly IColor CompareColor;
-        protected readonly double Tolerance;
+        protected IColor Color;
+        protected double Tolerance;
+        protected double NeighborTolerance;
 
-        public ColorCondition(IColor compareColor, double tolerance, double neighborTolerance = 0)
+        protected ColorCondition(IColor color, double tolerance, double neighborTolerance, bool dynamicThreshold)
+            : base(dynamicThreshold)
         {
-            this.CompareColor = compareColor;
-            this.Tolerance = tolerance;
-            this.NeighborTolerance = neighborTolerance;
-        }
-
-        public virtual bool Compare(IColor pixelColor, int neighborCount, double rowRatio = -1)
-        {
-            var multiplier = neighborCount > 0 ? NeighborTolerance : 1;
-            return Math.Abs(pixelColor.Difference(CompareColor)) <= Tolerance*multiplier;
+            Color = color;
+            Tolerance = tolerance;
+            NeighborTolerance = neighborTolerance;
         }
     }
 }

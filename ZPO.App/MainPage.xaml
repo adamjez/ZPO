@@ -41,7 +41,7 @@
                         Command="{Binding ErodeCommand}" 
                         HorizontalAlignment="Stretch"
                         Visibility="{Binding MoreActions, Converter={StaticResource BoolToVisibilityConverter}}"/>
-                <TextBlock Text="{Binding ResultMessage}" />
+                <TextBlock Text="{Binding ResultMessage}" Margin="10" TextWrapping="WrapWholeWords" />
                 
                 <StackPanel Padding="20">
                     <TextBlock Text="Selected Colors"></TextBlock>
@@ -118,7 +118,7 @@
             <ProgressRing IsActive="{Binding Processing}" IsEnabled="True" Width="100" Height="100" Visibility="Visible"/>
         </Grid>
         <CommandBar Grid.Column="0" VerticalAlignment="Bottom">
-            <AppBarButton Icon="BrowRatiosePhotos" Label="Load Image" Command="{Binding LoadImageCommand}"/>
+            <AppBarButton Icon="BrowsePhotos" Label="Load Image" Command="{Binding LoadImageCommand}"/>
             <AppBarButton Icon="Save" Label="Save Image" Command="{Binding SaveImageCommand}"/>
             <AppBarToggleButton Icon="Edit"  Label="More Actions" IsChecked="{Binding MoreActions, Mode=TwoWay}" />
         </CommandBar>

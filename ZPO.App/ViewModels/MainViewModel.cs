@@ -100,7 +100,11 @@ namespace ZPO.App.ViewModels
         public ColorSpaces SelectedColorSpace
         {
             get { return selectedColorSpace; }
-            set { SetProperty(ref selectedColorSpace, value); }
+            set
+            {
+                CheckRestrictions();
+                SetProperty(ref selectedColorSpace, value);
+            }
         }
 
 
@@ -111,7 +115,11 @@ namespace ZPO.App.ViewModels
         public ConditionType SelectedCondition
         {
             get { return selectedCondition; }
-            set { SetProperty(ref selectedCondition, value); }
+            set
+            {
+                CheckRestrictions();
+                SetProperty(ref selectedCondition, value);
+            }
         }
 
         public IEnumerable<ConditionType> Conditions
@@ -159,6 +167,21 @@ namespace ZPO.App.ViewModels
         {
             get { return resultMessage; }
             set { SetProperty(ref resultMessage, value); }
+        }
+
+        private void CheckRestrictions()
+        {
+            // Dirty hack to restrict condition type
+            if (SelectedCondition == ConditionType.NormalDistributionFromColor)
+            {
+                if (SelectedColorSpace != Core.Colors.ColorSpaces.RGB ||
+                    SelectedColorSpace != Core.Colors.ColorSpaces.GrayScale)
+                {
+                    // Have to set direct to private field to not to get stackoverflow exception
+                    // It's fallback value to not allow unsupported color space with given condition
+                    selectedColorSpace = Core.Colors.ColorSpaces.GrayScale;
+                }
+            }
         }
 
         public void SetNewImage(WriteableBitmap image)

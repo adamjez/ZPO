@@ -125,6 +125,7 @@
     <Compile Include="Colors\IntColor.cs" />
     <Compile Include="Colors\RGBColorService.cs" />
     <Compile Include="Colors\ColorSpaces.cs" />
+    <Compile Include="Conditions\BaseCondition.cs" />
     <Compile Include="Conditions\ColorCondition.cs" />
     <Compile Include="Conditions\ColorsCondition.cs" />
     <Compile Include="Conditions\CreateModelException.cs" />

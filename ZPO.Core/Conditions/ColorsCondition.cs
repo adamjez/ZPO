@@ -5,27 +5,26 @@ using ZPO.Core.Colors;
 
 namespace ZPO.Core.Conditions
 {
-    public class ColorsCondition : IColorCondition
+    public class ColorsCondition : BaseCondition
     {
         protected readonly double NeighborTolerance;
         protected readonly List<IColor> CompareColors;
         protected readonly double Tolerance;
-        protected readonly bool DynamicThreshold;
 
         public ColorsCondition(List<IColor> compareColors, double tolerance, double neighborTolerance, bool dynamicThreshold = false)
+            : base(dynamicThreshold)
         {
             this.CompareColors = compareColors;
             this.Tolerance = tolerance;
             this.NeighborTolerance = neighborTolerance;
-            this.DynamicThreshold = dynamicThreshold;
         }
 
-        public virtual bool Compare(IColor pixelColor, int neighborCount, double rowRatio = -1)
+        public override bool Compare(IColor pixelColor, int neighborCount, double rowRatio = -1)
         {
             var currentTolerance = Tolerance + neighborCount*NeighborTolerance;
             if (DynamicThreshold && rowRatio >= 0)
             {
-                currentTolerance = 100*rowRatio + neighborCount * NeighborTolerance;
+                currentTolerance = GetMultiplier(rowRatio) + neighborCount * NeighborTolerance;
             }
 
             return CompareColors

@@ -12,10 +12,12 @@ namespace ZPO.Core.Conditions
         private readonly double preComputedA;
         private readonly double threshold;
         private readonly double neighborThreshold;
+        private readonly double baseThreshold;
+
         protected Matrix<double> CovarianceMatrix;
         protected Vector<double> MeanVector;
-        public GaussianColorsCondition(List<IColor> compareColors, double tolerance, double neighborTolerance = 0)
-            : base(compareColors, tolerance, neighborTolerance)
+        public GaussianColorsCondition(List<IColor> compareColors, double tolerance, double neighborTolerance = 0, bool dynamicThreshold = false)
+            : base(compareColors, tolerance, neighborTolerance, dynamicThreshold)
         {
             if (!compareColors.Any())
             {
@@ -41,9 +43,15 @@ namespace ZPO.Core.Conditions
 
             preComputedA = 1 / Math.Sqrt(CovarianceMatrix.Determinant() * Math.Pow(2 * Math.PI, 3));
 
-            
 
-            this.threshold = compareColors.Min(color => GaussianFunction(color.GetParts())) * Math.Pow(2, -tolerance);
+            this.baseThreshold = compareColors.Min(color => GaussianFunction(color.GetParts()));
+
+            if (double.IsNaN(baseThreshold))
+            {
+                throw new CreateModelException("Couldn't create normal distribution from these colors");
+            }
+
+            this.threshold = baseThreshold * Math.Pow(2, -tolerance);
             this.neighborThreshold = threshold * Math.Pow(2, -neighborTolerance);
         }
 
@@ -52,7 +60,20 @@ namespace ZPO.Core.Conditions
         {
             var result = GaussianFunction(pixelColor.GetParts());
 
-            var currentThreshold = neighborCount > 0 ? neighborThreshold : threshold;
+            var currentThreshold = 0.0;
+            if (DynamicThreshold)
+            {
+                currentThreshold = baseThreshold * Math.Pow(2, -GetMultiplier(rowRatio));
+                if (neighborCount > 0)
+                {
+                    currentThreshold = currentThreshold * Math.Pow(2, -NeighborTolerance);
+                }
+            }
+            else
+            {
+                currentThreshold = neighborCount > 0 ? neighborThreshold : threshold;
+            }
+
 
             return result >= currentThreshold;
         }
