@@ -6,21 +6,21 @@ namespace ZPO.Core.Conditions
 {
     public class ColorCondition : IColorCondition
     {
-        private readonly double neighborTolerance;
-        private readonly IColor compareColor;
-        private readonly double tolerance;
+        protected readonly double NeighborTolerance;
+        protected readonly IColor CompareColor;
+        protected readonly double Tolerance;
 
         public ColorCondition(IColor compareColor, double tolerance, double neighborTolerance = 0)
         {
-            this.compareColor = compareColor;
-            this.tolerance = tolerance;
-            this.neighborTolerance = neighborTolerance;
+            this.CompareColor = compareColor;
+            this.Tolerance = tolerance;
+            this.NeighborTolerance = neighborTolerance;
         }
 
-        public bool Compare(IColor pixelColor, int neighborCount, double row = -1)
+        public virtual bool Compare(IColor pixelColor, int neighborCount, double row = -1)
         {
-            var multiplier = neighborCount > 0 ? neighborTolerance : 1;
-            return Math.Abs(pixelColor.Difference(compareColor)) <= tolerance*multiplier;
+            var multiplier = neighborCount > 0 ? NeighborTolerance : 1;
+            return Math.Abs(pixelColor.Difference(CompareColor)) <= Tolerance*multiplier;
         }
     }
 }

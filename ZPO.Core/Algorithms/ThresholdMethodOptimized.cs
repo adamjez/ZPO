@@ -10,7 +10,7 @@ using ZPO.Core.Conditions;
 
 namespace ZPO.Core.Algorithms
 {
-    public class RegionGrowing2 : IRegionGrowing
+    public class ThresholdMethodOptimized : IThresholdingMethod
     {
         private readonly ColorCreator colorCreator;
         private readonly byte[] sourceBuffer;
@@ -18,7 +18,7 @@ namespace ZPO.Core.Algorithms
         private readonly int bitmapHeight;
         private readonly int pixelsCount;
 
-        public RegionGrowing2(WriteableBitmap bitmap, ColorCreator colorCreator)
+        public ThresholdMethodOptimized(WriteableBitmap bitmap, ColorCreator colorCreator)
         {
             this.colorCreator = colorCreator;
             bitmapWidth = bitmap.PixelWidth;
@@ -75,7 +75,7 @@ namespace ZPO.Core.Algorithms
                             resultColor = ColorExtensions.Flag();
                             resultColor.ToArray(resultBuffer, realIndex);
 
-                            stack.PushRange(AddNeighbor(currentIndex, resultBuffer, type));
+                            stack.PushRange(AddNeighbor(currentIndex, type));
                         }
                         else if (hasNeighbor > 0)
                         {
@@ -89,7 +89,7 @@ namespace ZPO.Core.Algorithms
             return resultBuffer;
         }
 
-        private IEnumerable<int> AddNeighbor(int index, byte[] result, NeighborhoodType type)
+        private IEnumerable<int> AddNeighbor(int index, NeighborhoodType type)
         {
             if (index > 0)
             {
@@ -117,28 +117,28 @@ namespace ZPO.Core.Algorithms
                 }
             }
 
-            //if (type == NeighborhoodType.Eight)
-            //{
-            //    if (index - bitmapWidth - 1 > 0)
-            //    {
-            //        SetIfNotFlagged(result, index - bitmapWidth - 1);
-            //    }
+            if (type == NeighborhoodType.Eight)
+            {
+                if (index - bitmapWidth - 1 > 0)
+                {
+                    yield return index - bitmapWidth - 1;
+                }
 
-            //    if (index - bitmapWidth + 1 > 0)
-            //    {
-            //        SetIfNotFlagged(result, index - bitmapWidth + 1);
-            //    }
+                if (index - bitmapWidth + 1 > 0)
+                {
+                    yield return index - bitmapWidth + 1;
+                }
 
-            //    if (index + bitmapWidth - 1 < pixelsCount)
-            //    {
-            //        SetIfNotFlagged(result, index + bitmapWidth - 1);
-            //    }
+                if (index + bitmapWidth - 1 < pixelsCount)
+                {
+                    yield return index - bitmapWidth - 1;
+                }
 
-            //    if (index + bitmapWidth + 1 < pixelsCount)
-            //    {
-            //        SetIfNotFlagged(result, index + bitmapWidth + 1);
-            //    }
-            //}
+                if (index + bitmapWidth + 1 < pixelsCount)
+                {
+                    yield return index + bitmapWidth + 1;
+                }
+            }
 
         }
     }

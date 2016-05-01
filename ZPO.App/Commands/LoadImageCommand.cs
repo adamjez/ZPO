@@ -38,6 +38,7 @@ namespace ZPO.App.Commands
                 viewModel.CurrentColors.Clear();
                 viewModel.SourceImage = await file.AsWriteableImageAsync();
                 viewModel.SetNewImage(viewModel.SourceImage);
+                viewModel.ImageHistory.Clear();
             }
         }
     }

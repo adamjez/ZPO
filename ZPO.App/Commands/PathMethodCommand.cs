@@ -12,9 +12,9 @@ using ZPO.Core.Conditions;
 
 namespace ZPO.App.Commands
 {
-    public class RegionGrowingCommand : ImageProcessCommand
+    public class PathMethodCommand : ImageProcessCommand
     {
-        public RegionGrowingCommand(MainViewModel viewModel)
+        public PathMethodCommand(MainViewModel viewModel)
             : base(viewModel)
         {
             ViewModel.CurrentColors.CollectionChanged +=
@@ -42,12 +42,12 @@ namespace ZPO.App.Commands
 
                 ViewModel.Processing = true;
 
-                IRegionGrowing process = new RegionGrowing2(ViewModel.SourceImage, 
+                IThresholdingMethod process = new ThresholdMethodOptimized(ViewModel.SourceImage, 
                     new ColorCreator(ViewModel.SelectedColorSpace));
 
-                if (ViewModel.PathMethod == PathMethods.Base)
+                if (ViewModel.ThresholdMethod == PathMethods.Base)
                 {
-                    process = new RegionGrowing(ViewModel.SourceImage, 
+                    process = new ThresholdingMethod(ViewModel.SourceImage, 
                         new ColorCreator(ViewModel.SelectedColorSpace));
                 }
 
@@ -63,8 +63,13 @@ namespace ZPO.App.Commands
                 }
                 else if (ViewModel.SelectedCondition == ConditionType.ArithmeticalDistance)
                 {
-                    condition = new ColorsCondition(colors, ViewModel.Tolerance, 
+                    condition = new ColorsCondition(colors, ViewModel.Tolerance,
                         ViewModel.NeighborTolerance, ViewModel.DynamicThreshold);
+                }
+                else if (ViewModel.SelectedCondition == ConditionType.Experimental)
+                {
+                    condition = new GaussianColorCondition(colors.First(), ViewModel.Tolerance,
+                       ViewModel.NeighborTolerance, ViewModel.SourceImage, new ColorCreator(ViewModel.SelectedColorSpace));
                 }
 
                 process.Conditions.Add(condition);

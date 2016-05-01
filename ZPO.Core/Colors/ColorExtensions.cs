@@ -17,6 +17,8 @@ namespace ZPO.Core.Colors
                     return ToHSLColor(color);
                 case ColorSpaces.CIELab:
                     return ToCIELabColor(color);
+                case ColorSpaces.GrayScale:
+                    return ToGrayScaleColor(color);
                 default:
                     throw new NotImplementedException("Given color space is not implemented");
             }
@@ -29,6 +31,14 @@ namespace ZPO.Core.Colors
                 R = (byte)((color >> 16) & 0x000000FF),
                 G = (byte)((color >> 8) & 0x000000FF),
                 B = (byte)((color) & 0x000000FF)
+            };
+        }
+
+        public static GrayScaleColor ToGrayScaleColor(this Color color)
+        {
+            return new GrayScaleColor()
+            {
+                Intensity = (color.R * 6966 + color.G * 23436 + color.B * 2366) >> 15
             };
         }
 

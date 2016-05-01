@@ -10,13 +10,7 @@ using ZPO.Core.Conditions;
 
 namespace ZPO.Core.Algorithms
 {
-    public interface IRegionGrowing
-    {
-        List<IColorCondition> Conditions { get; }
-        Task<WriteableBitmap> ProcessAsync(NeighborhoodType type);
-    }
-
-    public class RegionGrowing : IRegionGrowing
+    public class ThresholdingMethod : IThresholdingMethod
     {
         private readonly ColorCreator colorCreator;
         private readonly byte[] sourceBuffer;
@@ -24,7 +18,7 @@ namespace ZPO.Core.Algorithms
         private readonly int bitmapHeight;
         private readonly int pixelsCount;
 
-        public RegionGrowing(WriteableBitmap bitmap, ColorCreator colorCreator)
+        public ThresholdingMethod(WriteableBitmap bitmap, ColorCreator colorCreator)
         {
             this.colorCreator = colorCreator;
             bitmapWidth = bitmap.PixelWidth;

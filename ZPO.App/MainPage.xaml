@@ -22,10 +22,10 @@
                 <Button Content="Process"
                         Command="{Binding RegionGrowingCommand}"
                         HorizontalAlignment="Stretch"/>
-                <Button Content="GrayScale"
+                <!--<Button Content="GrayScale"
                         Command="{Binding ToGrayCommand}"
                         HorizontalAlignment="Stretch"
-                        Visibility="{Binding MoreActions, Converter={StaticResource BoolToVisibilityConverter}}"/>
+                        Visibility="{Binding MoreActions, Converter={StaticResource BoolToVisibilityConverter}}"/>-->
                 <!--<Button Content="Both Edges"
                         Command="{Binding EdgeDetectionCommand}"
                         HorizontalAlignment="Stretch"/>-->
@@ -70,7 +70,7 @@
                         </Rectangle>
                     </Grid>
                     <ToggleSwitch Header="Dynamic Threshold" IsOn="{Binding DynamicThreshold, Mode=TwoWay}"/>
-                    <Slider Value="{Binding Tolerance, Mode=TwoWay}" Minimum="0" Maximum="100" Header="Tolerance"
+                    <Slider Value="{Binding Tolerance, Mode=TwoWay}" Minimum="0" Maximum="200" Header="Tolerance"
                             Visibility="{Binding DynamicThreshold, Converter={StaticResource BoolToVisibilityConverter}, ConverterParameter=I}"/>
                     <Slider Value="{Binding NeighborTolerance, Mode=TwoWay}" Minimum="0" Maximum="100"  
                             Header="Neighbor Tolerance"
@@ -81,9 +81,9 @@
                     <ComboBox Header="Conditions" x:Name="ConditionsComboBox" 
                               SelectedItem="{Binding SelectedCondition, Mode=TwoWay}"
                               ItemsSource="{Binding Conditions}"/>
-                    <ComboBox Header="Path Methods" x:Name="PathMethodComboBox" 
-                              SelectedItem="{Binding PathMethod, Mode=TwoWay}"
-                              ItemsSource="{Binding PathMethods}"/>
+                    <ComboBox Header="Threshold Methods" x:Name="PathMethodComboBox" 
+                              SelectedItem="{Binding ThresholdMethod, Mode=TwoWay}"
+                              ItemsSource="{Binding ThresholdMethods}"/>
                 </StackPanel>
             </StackPanel>
             <Grid Grid.Row="1" Padding="20">

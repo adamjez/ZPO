@@ -1,4 +1,5 @@
 ﻿using System;
+using Windows.UI;
 
 namespace ZPO.Core.Colors
 {
@@ -19,6 +20,8 @@ namespace ZPO.Core.Colors
                 return ColorExtensions.ToColor(value).ToHSLColor();
             else if (colorSpace == ColorSpaces.CIELab)
                 return ColorExtensions.ToColor(value).ToCIELabColor();
+            else if (colorSpace == ColorSpaces.GrayScale)
+                return ColorExtensions.ToColor(value).ToGrayScaleColor();
             throw new ArgumentException();
         }
     }

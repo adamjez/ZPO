@@ -5,5 +5,6 @@ namespace ZPO.Core.Colors
         RGB,
         HSL,
         CIELab,
+        GrayScale
     }
 }

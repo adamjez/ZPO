@@ -40,7 +40,10 @@ namespace ZPO.Core.Conditions
             CovarianceMatrix = covarianceMultiplier * colorsMatrix.Transpose() * colorsMatrix;
 
             preComputedA = 1 / Math.Sqrt(CovarianceMatrix.Determinant() * Math.Pow(2 * Math.PI, 3));
-            this.threshold = GaussianFunction(MeanVector) * Math.Pow(2, -tolerance);
+
+            
+
+            this.threshold = compareColors.Min(color => GaussianFunction(color.GetParts())) * Math.Pow(2, -tolerance);
             this.neighborThreshold = threshold * Math.Pow(2, -neighborTolerance);
         }
 
@@ -64,7 +67,7 @@ namespace ZPO.Core.Conditions
 
             var currentThreshold = neighborCount > 0 ? neighborThreshold : threshold;
 
-            return result > currentThreshold;
+            return result >= currentThreshold;
         }
 
         private double GaussianFunction(Vector<double> value)

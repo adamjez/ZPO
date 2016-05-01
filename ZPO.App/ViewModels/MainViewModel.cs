@@ -23,7 +23,7 @@ namespace ZPO.App.ViewModels
             EdgeDetectionCommand = new ActionImageProcessCommand(this, ImageEdgeDetection.EdgeDetection);
             DilateCommand = new ActionImageProcessCommand(this, Morphology.Dilate);
             ErodeCommand = new ActionImageProcessCommand(this, Morphology.Erode);
-            RegionGrowingCommand = new RegionGrowingCommand(this);
+            RegionGrowingCommand = new PathMethodCommand(this);
             LoadImageCommand = new LoadImageCommand(this);
             SaveImageCommand = new SaveImageCommand(this);
             // Default tolerance value
@@ -117,15 +117,15 @@ namespace ZPO.App.ViewModels
         public IEnumerable<ConditionType> Conditions
             => Enum.GetValues(typeof(ConditionType)).Cast<ConditionType>();
 
-        private PathMethods pathMethod;
+        private PathMethods thresholdMethod;
 
-        public PathMethods PathMethod
+        public PathMethods ThresholdMethod
         {
-            get { return pathMethod; }
-            set { SetProperty(ref pathMethod, value); }
+            get { return thresholdMethod; }
+            set { SetProperty(ref thresholdMethod, value); }
         }
 
-        public IEnumerable<PathMethods> PathMethods
+        public IEnumerable<PathMethods> ThresholdMethods
             => Enum.GetValues(typeof(PathMethods)).Cast<PathMethods>();
 
         private bool moreActions;

@@ -31,6 +31,11 @@ namespace ZPO.Core.Colors
                 return CIELabColorService.Difference((CIELabColor)value1, (CIELabColor)value2);
             }
 
+            if (value1 is GrayScaleColor && value2 is GrayScaleColor)
+            {
+                return GrayScaleColorService.Difference((GrayScaleColor)value1, (GrayScaleColor)value2);
+            }
+
             throw new ArgumentException("Arguments doesn't match");
         }
 
@@ -39,5 +44,6 @@ namespace ZPO.Core.Colors
         private static readonly RGBColorService RGBColorService = new RGBColorService();
         private static readonly HSLColorService HSLColorService = new HSLColorService();
         private static readonly CIELabColorService CIELabColorService = new CIELabColorService();
+        private static readonly GrayScaleColorService GrayScaleColorService = new GrayScaleColorService();
     }
 }
