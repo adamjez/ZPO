@@ -127,6 +127,7 @@
     <Compile Include="Colors\ColorSpaces.cs" />
     <Compile Include="Conditions\ColorCondition.cs" />
     <Compile Include="Conditions\ColorsCondition.cs" />
+    <Compile Include="Conditions\CreateModelException.cs" />
     <Compile Include="Conditions\GaussianColorCondition.cs" />
     <Compile Include="Conditions\GaussianColorsCondition.cs" />
     <Compile Include="Conditions\IColorCondition.cs" />

@@ -42,12 +42,13 @@ namespace ZPO.App.Commands
 
                 ViewModel.Processing = true;
 
-                IThresholdingMethod process = new ThresholdMethodOptimized(ViewModel.SourceImage, 
+                var sucess = true;
+                IThresholdingMethod process = new ThresholdMethodOptimized(ViewModel.SourceImage,
                     new ColorCreator(ViewModel.SelectedColorSpace));
 
                 if (ViewModel.ThresholdMethod == PathMethods.Base)
                 {
-                    process = new ThresholdingMethod(ViewModel.SourceImage, 
+                    process = new ThresholdingMethod(ViewModel.SourceImage,
                         new ColorCreator(ViewModel.SelectedColorSpace));
                 }
 
@@ -56,9 +57,9 @@ namespace ZPO.App.Commands
                     .ToList();
 
                 IColorCondition condition = null;
-                if (ViewModel.SelectedCondition == ConditionType.GaussianModel)
+                if (ViewModel.SelectedCondition == ConditionType.NormalDistributionFromColors)
                 {
-                    condition = new GaussianColorsCondition(colors, ViewModel.Tolerance, 
+                    condition = new GaussianColorsCondition(colors, ViewModel.Tolerance,
                         ViewModel.NeighborTolerance);
                 }
                 else if (ViewModel.SelectedCondition == ConditionType.ArithmeticalDistance)
@@ -66,17 +67,32 @@ namespace ZPO.App.Commands
                     condition = new ColorsCondition(colors, ViewModel.Tolerance,
                         ViewModel.NeighborTolerance, ViewModel.DynamicThreshold);
                 }
-                else if (ViewModel.SelectedCondition == ConditionType.Experimental)
+                else if (ViewModel.SelectedCondition == ConditionType.NormalDistributionFromColor)
                 {
-                    condition = new GaussianColorCondition(colors.First(), ViewModel.Tolerance,
-                       ViewModel.NeighborTolerance, ViewModel.SourceImage, new ColorCreator(ViewModel.SelectedColorSpace));
+                    try
+                    {
+                        condition = new GaussianColorCondition(colors.First(), ViewModel.Tolerance,
+                            ViewModel.NeighborTolerance, ViewModel.SourceImage,
+                            new ColorCreator(ViewModel.SelectedColorSpace));
+                    }
+                    catch (CreateModelException exc)
+                    {
+                        ViewModel.ResultMessage = "Couldn't create model: " + exc.Message;
+                        sucess = false;
+                    }
+
                 }
 
-                process.Conditions.Add(condition);
-   
-                var result = await process.ProcessAsync(NeighborhoodType.Four);
+                if (sucess)
+                {
+                    process.Conditions.Add(condition);
 
-                ViewModel.SetNewImage(result);
+                    var result = await process.ProcessAsync(NeighborhoodType.Four);
+
+                    ViewModel.SetNewImage(result);
+
+                    ViewModel.ResultMessage = string.Empty;
+                }
 
                 ViewModel.Processing = false;
 

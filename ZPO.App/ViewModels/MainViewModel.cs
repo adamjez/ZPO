@@ -136,10 +136,18 @@ namespace ZPO.App.ViewModels
         }
 
         private bool dynamicThreshold;
+
         public bool DynamicThreshold
         {
             get { return dynamicThreshold; }
             set { SetProperty(ref dynamicThreshold, value); }
+        }
+
+        private string resultMessage;
+        public string ResultMessage
+        {
+            get { return resultMessage; }
+            set { SetProperty(ref resultMessage, value); }
         }
 
         public void SetNewImage(WriteableBitmap image)

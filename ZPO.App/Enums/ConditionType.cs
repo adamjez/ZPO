@@ -9,7 +9,7 @@ namespace ZPO.App.Enums
     public enum ConditionType
     {
         ArithmeticalDistance,
-        GaussianModel,
-        Experimental
+        NormalDistributionFromColors,
+        NormalDistributionFromColor
     }
 }

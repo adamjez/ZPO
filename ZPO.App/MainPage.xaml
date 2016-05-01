@@ -22,6 +22,7 @@
                 <Button Content="Process"
                         Command="{Binding RegionGrowingCommand}"
                         HorizontalAlignment="Stretch"/>
+                <TextBlock Text="{Binding ResultMessage}" />
                 <!--<Button Content="GrayScale"
                         Command="{Binding ToGrayCommand}"
                         HorizontalAlignment="Stretch"
@@ -83,7 +84,8 @@
                               ItemsSource="{Binding Conditions}"/>
                     <ComboBox Header="Threshold Methods" x:Name="PathMethodComboBox" 
                               SelectedItem="{Binding ThresholdMethod, Mode=TwoWay}"
-                              ItemsSource="{Binding ThresholdMethods}"/>
+                              ItemsSource="{Binding ThresholdMethods}"
+                              Visibility="{Binding MoreActions, Converter={StaticResource BoolToVisibilityConverter}}"/>
                 </StackPanel>
             </StackPanel>
             <Grid Grid.Row="1" Padding="20">
