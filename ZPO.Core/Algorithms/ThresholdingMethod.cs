@@ -48,41 +48,42 @@ namespace ZPO.Core.Algorithms
 
             var change = true;
             var iterations = 0;
-            var maxIterations = type == NeighborhoodType.None? 0 : 10;
             while (change)
             {
                 iterations++;
-                //if (iterations == maxIterations)
-                //    break;
+
                 change = false;
 
                 //Parallel.For(0, bitmapHeight, y =>
                 for (int y = 0; y < bitmapHeight; y++)
-            {
-                for (int x = 0; x < bitmapWidth; x++)
                 {
-                    var currentIndex = y*bitmapWidth + x;
-                    var realIndex = currentIndex*4;
-
-                    var resultColor = resultBuffer.ToInt(realIndex);
-
-                    if (resultColor.IsFlagged())
+                    for (int x = 0; x < bitmapWidth; x++)
                     {
-                        continue;
-                    }
+                        var currentIndex = y * bitmapWidth + x;
+                        var realIndex = currentIndex * 4;
 
-                    var pixelColor = colorCreator.Create(sourceBuffer.ToInt(realIndex));
-                    if (Conditions.Any(cond => cond.Compare(pixelColor, resultColor.GetNeighborMultiplier())))
-                    {
-                        change = true;
+                        var resultColor = resultBuffer.ToInt(realIndex);
 
-                        resultColor = ColorExtensions.Flag();
-                        resultColor.ToArray(resultBuffer, realIndex);
+                        if (resultColor.IsFlagged())
+                        {
+                            continue;
+                        }
 
-                        AddNeighbor(currentIndex, resultBuffer, type);
+                        var pixelColor = colorCreator.Create(sourceBuffer.ToInt(realIndex));
+                        if (Conditions.Any(cond => cond.Compare(pixelColor, resultColor.GetNeighborMultiplier())))
+                        {
+                            change = true;
+
+                            resultColor = ColorExtensions.Flag();
+                            resultColor.ToArray(resultBuffer, realIndex);
+
+                            if (type != NeighborhoodType.None)
+                            {
+                                AddNeighbor(currentIndex, resultBuffer, type);
+                            }
+                        }
                     }
                 }
-            }
             }
             Debug.WriteLine($"Iterations: {iterations}");
             return resultBuffer;

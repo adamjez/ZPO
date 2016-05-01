@@ -17,7 +17,7 @@ namespace ZPO.Core.Conditions
             this.NeighborTolerance = neighborTolerance;
         }
 
-        public virtual bool Compare(IColor pixelColor, int neighborCount, double row = -1)
+        public virtual bool Compare(IColor pixelColor, int neighborCount, double rowRatio = -1)
         {
             var multiplier = neighborCount > 0 ? NeighborTolerance : 1;
             return Math.Abs(pixelColor.Difference(CompareColor)) <= Tolerance*multiplier;

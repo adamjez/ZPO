@@ -24,6 +24,7 @@ namespace ZPO.App
 
         private void MainPage_Loaded(object sender, Windows.UI.Xaml.RoutedEventArgs e)
         {
+            NeighborhoodTypeComboBox.SelectedIndex = 2;
             PathMethodComboBox.SelectedIndex = 1;
             ColorSpacesComboBox.SelectedIndex = 0;
             ConditionsComboBox.SelectedIndex = 0;

@@ -12,7 +12,7 @@ namespace ZPO.Core.Conditions
         protected readonly double Tolerance;
         protected readonly bool DynamicThreshold;
 
-        public ColorsCondition(List<IColor> compareColors, double tolerance, double neighborTolerance = 1, bool dynamicThreshold = false)
+        public ColorsCondition(List<IColor> compareColors, double tolerance, double neighborTolerance, bool dynamicThreshold = false)
         {
             this.CompareColors = compareColors;
             this.Tolerance = tolerance;
@@ -20,12 +20,12 @@ namespace ZPO.Core.Conditions
             this.DynamicThreshold = dynamicThreshold;
         }
 
-        public virtual bool Compare(IColor pixelColor, int neighborCount, double row = -1)
+        public virtual bool Compare(IColor pixelColor, int neighborCount, double rowRatio = -1)
         {
             var currentTolerance = Tolerance + neighborCount*NeighborTolerance;
-            if (DynamicThreshold && row > 0)
+            if (DynamicThreshold && rowRatio >= 0)
             {
-                currentTolerance = 100*row + neighborCount * NeighborTolerance;
+                currentTolerance = 100*rowRatio + neighborCount * NeighborTolerance;
             }
 
             return CompareColors

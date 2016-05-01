@@ -48,7 +48,6 @@ namespace ZPO.Core.Algorithms
 
             var stack = new Stack<int>();
 
-            //Parallel.For(0, bitmapHeight, y =>
             for (int y = 0; y < bitmapHeight; y++)
             {
                 for (int x = 0; x < bitmapWidth; x++)
@@ -75,7 +74,10 @@ namespace ZPO.Core.Algorithms
                             resultColor = ColorExtensions.Flag();
                             resultColor.ToArray(resultBuffer, realIndex);
 
-                            stack.PushRange(AddNeighbor(currentIndex, type));
+                            if (type != NeighborhoodType.None)
+                            {
+                                stack.PushRange(AddNeighbor(currentIndex, type));
+                            }
                         }
                         else if (hasNeighbor > 0)
                         {
@@ -85,7 +87,7 @@ namespace ZPO.Core.Algorithms
                     }
                 }
             }
-            //Debug.WriteLine($"Iterations: {iterations}");
+
             return resultBuffer;
         }
 
@@ -119,19 +121,19 @@ namespace ZPO.Core.Algorithms
 
             if (type == NeighborhoodType.Eight)
             {
-                if (index - bitmapWidth - 1 > 0)
+                if (index - bitmapWidth - 1 >= 0)
                 {
                     yield return index - bitmapWidth - 1;
                 }
 
-                if (index - bitmapWidth + 1 > 0)
+                if (index - bitmapWidth + 1 >= 0)
                 {
                     yield return index - bitmapWidth + 1;
                 }
 
                 if (index + bitmapWidth - 1 < pixelsCount)
                 {
-                    yield return index - bitmapWidth - 1;
+                    yield return index + bitmapWidth - 1;
                 }
 
                 if (index + bitmapWidth + 1 < pixelsCount)

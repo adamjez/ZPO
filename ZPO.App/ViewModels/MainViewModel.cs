@@ -128,6 +128,17 @@ namespace ZPO.App.ViewModels
         public IEnumerable<PathMethods> ThresholdMethods
             => Enum.GetValues(typeof(PathMethods)).Cast<PathMethods>();
 
+        private NeighborhoodType neighborhoodType;
+
+        public NeighborhoodType NeighborhoodType
+        {
+            get { return neighborhoodType; }
+            set { SetProperty(ref neighborhoodType, value); }
+        }
+
+        public IEnumerable<NeighborhoodType> NeighborhoodTypes
+            => Enum.GetValues(typeof(NeighborhoodType)).Cast<NeighborhoodType>();
+
         private bool moreActions;
         public bool MoreActions
         {

@@ -193,7 +193,7 @@ namespace ZPO.Core.Conditions
         }
 
 
-        public override bool Compare(IColor pixelColor, int neighborCount, double row = -1)
+        public override bool Compare(IColor pixelColor, int neighborCount, double rowRatio = -1)
         {
             var result = 0.0;
             if (partsCount == 1)

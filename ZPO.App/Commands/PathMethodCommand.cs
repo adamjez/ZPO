@@ -80,14 +80,13 @@ namespace ZPO.App.Commands
                         ViewModel.ResultMessage = "Couldn't create model: " + exc.Message;
                         sucess = false;
                     }
-
                 }
 
                 if (sucess)
                 {
                     process.Conditions.Add(condition);
 
-                    var result = await process.ProcessAsync(NeighborhoodType.Four);
+                    var result = await process.ProcessAsync(ViewModel.NeighborhoodType);
 
                     ViewModel.SetNewImage(result);
 

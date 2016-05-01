@@ -47,23 +47,10 @@ namespace ZPO.Core.Conditions
             this.neighborThreshold = threshold * Math.Pow(2, -neighborTolerance);
         }
 
-        private double min = 1;
-        private double max = 0;
 
-        public override bool Compare(IColor pixelColor, int neighborCount, double row = -1)
+        public override bool Compare(IColor pixelColor, int neighborCount, double rowRatio = -1)
         {
             var result = GaussianFunction(pixelColor.GetParts());
-
-            if (result > max)
-            {
-                Debug.WriteLine($"new max is {result}");
-            }
-            if (result < min)
-            {
-                Debug.WriteLine($"new min is {result}");
-            }
-            max = Math.Max(result, max);
-            min = Math.Min(result, min);
 
             var currentThreshold = neighborCount > 0 ? neighborThreshold : threshold;
 

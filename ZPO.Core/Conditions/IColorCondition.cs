@@ -9,8 +9,8 @@ namespace ZPO.Core.Conditions
         /// </summary>
         /// <param name="pixelColor">Color to compare with</param>
         /// <param name="neighborCount">Number of pixel neighbor, which was flagged</param>
-        /// <param name="row">Ratio of current row to height of image in rows. Can be ignored.</param>
+        /// <param name="rowRatio">Ratio of current rowRatio to height of image in rows. Can be ignored.</param>
         /// <returns>Returns True if pixelColor meets given conditions</returns>
-        bool Compare(IColor pixelColor, int neighborCount, double row = -1);
+        bool Compare(IColor pixelColor, int neighborCount, double rowRatio = -1);
     }
 }

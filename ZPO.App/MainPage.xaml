@@ -22,7 +22,6 @@
                 <Button Content="Process"
                         Command="{Binding RegionGrowingCommand}"
                         HorizontalAlignment="Stretch"/>
-                <TextBlock Text="{Binding ResultMessage}" />
                 <!--<Button Content="GrayScale"
                         Command="{Binding ToGrayCommand}"
                         HorizontalAlignment="Stretch"
@@ -42,6 +41,8 @@
                         Command="{Binding ErodeCommand}" 
                         HorizontalAlignment="Stretch"
                         Visibility="{Binding MoreActions, Converter={StaticResource BoolToVisibilityConverter}}"/>
+                <TextBlock Text="{Binding ResultMessage}" />
+                
                 <StackPanel Padding="20">
                     <TextBlock Text="Selected Colors"></TextBlock>
                     <GridView ItemsSource="{Binding CurrentColors}" x:Name="ColorsGridView" 
@@ -86,6 +87,11 @@
                               SelectedItem="{Binding ThresholdMethod, Mode=TwoWay}"
                               ItemsSource="{Binding ThresholdMethods}"
                               Visibility="{Binding MoreActions, Converter={StaticResource BoolToVisibilityConverter}}"/>
+                    <ComboBox Header="Neighborhood Types" x:Name="NeighborhoodTypeComboBox" 
+                              SelectedItem="{Binding NeighborhoodType, Mode=TwoWay}"
+                              ItemsSource="{Binding NeighborhoodTypes}"
+                              Visibility="{Binding MoreActions, Converter={StaticResource BoolToVisibilityConverter}}"/>
+                    
                 </StackPanel>
             </StackPanel>
             <Grid Grid.Row="1" Padding="20">
@@ -112,7 +118,7 @@
             <ProgressRing IsActive="{Binding Processing}" IsEnabled="True" Width="100" Height="100" Visibility="Visible"/>
         </Grid>
         <CommandBar Grid.Column="0" VerticalAlignment="Bottom">
-            <AppBarButton Icon="BrowsePhotos" Label="Load Image" Command="{Binding LoadImageCommand}"/>
+            <AppBarButton Icon="BrowRatiosePhotos" Label="Load Image" Command="{Binding LoadImageCommand}"/>
             <AppBarButton Icon="Save" Label="Save Image" Command="{Binding SaveImageCommand}"/>
             <AppBarToggleButton Icon="Edit"  Label="More Actions" IsChecked="{Binding MoreActions, Mode=TwoWay}" />
         </CommandBar>
