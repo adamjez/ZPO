@@ -36,7 +36,15 @@ namespace ZPO.App.Commands
             if (file != null)
             {
                 viewModel.CurrentColors.Clear();
-                viewModel.SourceImage = await file.AsWriteableImageAsync();
+                try
+                {
+                    viewModel.SourceImage = await file.AsWriteableImageAsync();
+                }
+                catch (Exception exc)
+                {
+                    viewModel.ResultMessage = "Couldn't open given file: " + exc.Message;
+                    return;
+                }
                 viewModel.SetNewImage(viewModel.SourceImage);
                 viewModel.ImageHistory.Clear();
             }

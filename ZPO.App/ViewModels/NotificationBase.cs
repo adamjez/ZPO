@@ -5,7 +5,10 @@ using System.Runtime.CompilerServices;
 
 namespace ZPO.App.ViewModels
 {
-
+    /// <summary>
+    /// Base class for View Models
+    /// Provides methods for handling Observable Properties 
+    /// </summary>
     public class NotificationBase : INotifyPropertyChanged
     {
         public event PropertyChangedEventHandler PropertyChanged;

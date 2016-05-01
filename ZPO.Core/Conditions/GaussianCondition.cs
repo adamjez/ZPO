@@ -7,7 +7,14 @@ using ZPO.Core.Colors;
 
 namespace ZPO.Core.Conditions
 {
-    public class GaussianColorsCondition : ColorsCondition
+    /// <summary>
+    /// From given compare colors tries to create normal distribution
+    /// First its create vector of means values and covariance matrix
+    /// It support all color spaces (variable number of parts - grayscale 1 part
+    /// rgb 3 parts cielab 2 parts). Base threshold is created from minimal value
+    /// of normal distribution for given colors. 
+    /// </summary>
+    public class GaussianCondition : ArithmeticalDistanceCondition
     {
         private readonly double preComputedA;
         private readonly double threshold;
@@ -16,7 +23,7 @@ namespace ZPO.Core.Conditions
 
         protected Matrix<double> CovarianceMatrix;
         protected Vector<double> MeanVector;
-        public GaussianColorsCondition(List<IColor> compareColors, double tolerance, double neighborTolerance = 0, bool dynamicThreshold = false)
+        public GaussianCondition(List<IColor> compareColors, double tolerance, double neighborTolerance = 0, bool dynamicThreshold = false)
             : base(compareColors, tolerance, neighborTolerance, dynamicThreshold)
         {
             if (!compareColors.Any())

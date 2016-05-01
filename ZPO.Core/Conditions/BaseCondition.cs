@@ -4,6 +4,10 @@ using ZPO.Core.Colors;
 
 namespace ZPO.Core.Conditions
 {
+    /// <summary>
+    /// Abstrac class which supports dynamic threshold and provides
+    /// method to get multiplier if dynamic threshold is turned on
+    /// </summary>
     public abstract class BaseCondition : IColorCondition
     {
         protected readonly bool DynamicThreshold;

@@ -10,6 +10,11 @@ namespace ZPO.App.Extensions
 {
     public static class FileExtensions
     {
+        /// <summary>
+        /// Opens file for reading nad decode it as bitmap and returns WriteableBitmap
+        /// </summary>
+        /// <param name="file">file to be open</param>
+        /// <returns>Bitmap decoded from given file</returns>
         public static async Task<WriteableBitmap> AsWriteableImageAsync(this StorageFile file)
         {
             using (IRandomAccessStream fileStream = await file.OpenAsync(FileAccessMode.Read))

@@ -92,12 +92,12 @@ namespace ZPO.App.Commands
             IColorCondition condition = null;
             if (ViewModel.SelectedCondition == ConditionType.NormalDistributionFromColors)
             {
-                condition = new GaussianColorsCondition(colors, ViewModel.Tolerance,
+                condition = new GaussianCondition(colors, ViewModel.Tolerance,
                     ViewModel.NeighborTolerance, ViewModel.DynamicThreshold);
             }
             else if (ViewModel.SelectedCondition == ConditionType.ArithmeticalDistance)
             {
-                condition = new ColorsCondition(colors, ViewModel.Tolerance,
+                condition = new ArithmeticalDistanceCondition(colors, ViewModel.Tolerance,
                     ViewModel.NeighborTolerance, ViewModel.DynamicThreshold);
             }
             else if (ViewModel.SelectedCondition == ConditionType.NormalDistributionFromColor)

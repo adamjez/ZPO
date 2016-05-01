@@ -3,11 +3,20 @@ using System.Collections.Generic;
 using System.Linq;
 using Windows.UI.Xaml.Media.Imaging;
 using MathNet.Numerics.LinearAlgebra;
-using MathNet.Numerics.LinearAlgebra.Complex;
 using ZPO.Core.Colors;
 
 namespace ZPO.Core.Conditions
 {
+    /// <summary>
+    /// Method that is futher described in documentation
+    /// This method only support grayscale and RGB color space
+    /// In constructor this actions are made:
+    ///     1. Histogram of analyzed image is created
+    ///     2. Histogram is smoothed by sliding window
+    ///     3. Maximum and minimum peaks are found in histogram
+    ///     4. Peaks which are connected with given compare color are selected
+    ///     5. From peaks are derived parameters of normal distribution
+    /// </summary>
     public class GaussianColorCondition : ColorCondition
     {
         private double threshold;
@@ -24,8 +33,6 @@ namespace ZPO.Core.Conditions
         private Matrix<double> covarianceMatrix;
         private double preComputedA;
 
-
-
         public GaussianColorCondition(IColor compareColor, double tolerance, double neighborTolerance,
             WriteableBitmap image, ColorCreator colorCreator, bool dynamicThreshold = false)
             : base(compareColor, tolerance, neighborTolerance, dynamicThreshold)
@@ -36,7 +43,7 @@ namespace ZPO.Core.Conditions
             {
                 MakeHistogramFromGrayScale(image, colorCreator);
             }
-            else if (partsCount == 3)
+            else if (partsCount == 3 && compareColor is RGBColor)
             {
                 MakeHistogram(image, colorCreator);
             }
@@ -194,7 +201,6 @@ namespace ZPO.Core.Conditions
             Max,
             Min
         }
-
 
         public override bool Compare(IColor pixelColor, int neighborCount, double rowRatio = -1)
         {

@@ -1,8 +1,6 @@
 using System;
 using System.Collections.Generic;
-using System.Diagnostics;
 using System.Linq;
-using System.Runtime.CompilerServices;
 using System.Threading.Tasks;
 using Windows.UI.Xaml.Media.Imaging;
 using ZPO.Core.Colors;
@@ -10,6 +8,11 @@ using ZPO.Core.Conditions;
 
 namespace ZPO.Core.Algorithms
 {
+    /// <summary>
+    /// Optimized version of ThresholdMethod
+    /// Iterates through image, if some pixel meets conditions, than is flagged.
+    /// Neighbor pixels are added to priority list and are checked right after it.
+    /// </summary>
     public class ThresholdMethodOptimized : IThresholdingMethod
     {
         private readonly ColorCreator colorCreator;

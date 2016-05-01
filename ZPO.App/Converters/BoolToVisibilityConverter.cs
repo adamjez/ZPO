@@ -4,6 +4,10 @@ using Windows.UI.Xaml.Data;
 
 namespace ZPO.App.Converters
 {
+    /// <summary>
+    /// Converts bool value to Visibility
+    /// If given parameter is "I" like Inverse given value is inverted
+    /// </summary>
     public class BoolToVisibilityConverter : IValueConverter
     {
         public object Convert(object value, Type targetType, object parameter, string language)

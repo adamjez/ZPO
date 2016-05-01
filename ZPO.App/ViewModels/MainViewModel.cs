@@ -13,14 +13,19 @@ using ZPO.Core.Colors;
 
 namespace ZPO.App.ViewModels
 {
+    /// <summary>
+    /// MainViewModel contains all properties and commands from MainPage
+    /// </summary>
     public class MainViewModel : NotificationBase
     {
+        /// <summary>
+        /// Creates default values of properties and initialize commands
+        /// </summary>
         public MainViewModel()
         {
             ImageHistory = new ObservableQueue<WriteableBitmap>(12);
-            ToGrayCommand = new ActionImageProcessCommand(this, ImageEdgeDetection.MakeGrayscale);
+            ToGrayCommand = new ActionImageProcessCommand(this, ImageProcessing.MakeGrayscale);
             BlurCommand = new ActionImageProcessCommand(this, ImageBlur.GaussianBlur);
-            EdgeDetectionCommand = new ActionImageProcessCommand(this, ImageEdgeDetection.EdgeDetection);
             DilateCommand = new ActionImageProcessCommand(this, Morphology.Dilate);
             ErodeCommand = new ActionImageProcessCommand(this, Morphology.Erode);
             RegionGrowingCommand = new PathMethodCommand(this);
@@ -31,7 +36,6 @@ namespace ZPO.App.ViewModels
             NeighborTolerance = 10;
         }
 
-        public ICommand EdgeDetectionCommand { get; private set; }
         public ICommand BlurCommand { get; private set; }
         public ICommand DilateCommand { get; private set; }
         public ICommand ErodeCommand { get; private set; }
@@ -169,9 +173,11 @@ namespace ZPO.App.ViewModels
             set { SetProperty(ref resultMessage, value); }
         }
 
+        /// <summary>
+        /// Dirty hack to restrict condition type with color space
+        /// </summary>
         private void CheckRestrictions()
         {
-            // Dirty hack to restrict condition type
             if (SelectedCondition == ConditionType.NormalDistributionFromColor)
             {
                 if (SelectedColorSpace != Core.Colors.ColorSpaces.RGB ||
@@ -184,6 +190,10 @@ namespace ZPO.App.ViewModels
             }
         }
 
+        /// <summary>
+        /// Sets new image to UI and adds old to history stack
+        /// </summary>
+        /// <param name="image">new image</param>
         public void SetNewImage(WriteableBitmap image)
         {
             if(CurrentImage != null)

@@ -10,6 +10,12 @@ using ZPO.Core.Conditions;
 
 namespace ZPO.Core.Algorithms
 {
+    /// <summary>
+    /// Base thresholding method which iterates through whole image and checks
+    /// if any condition succeeds. If yes, that pixel is flagged and neighboring pixels
+    /// are flagged as Neighbor so when is pixel selected toleration is increased
+    /// If any changes in flagging pixels happens, the iterations over image repeats
+    /// </summary>
     public class ThresholdingMethod : IThresholdingMethod
     {
         private readonly ColorCreator colorCreator;

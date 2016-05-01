@@ -5,6 +5,10 @@ using MathNet.Numerics.LinearAlgebra.Double;
 
 namespace ZPO.Core.Colors
 {
+    /// <summary>
+    /// Contains methods for creating color of given type from int value
+    /// Contains static methods for flagging and retrieving flags from int type color
+    /// </summary>
     public static class ColorExtensions
     {
         public static IColor ConvertTo(this Color color, ColorSpaces type)

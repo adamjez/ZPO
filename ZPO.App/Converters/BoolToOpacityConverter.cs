@@ -3,6 +3,7 @@ using Windows.UI.Xaml.Data;
 
 namespace ZPO.App.Converters
 {
+
     public class BoolToOpacityConverter : IValueConverter
     {
         public object Convert(object value, Type targetType, object parameter, string language)

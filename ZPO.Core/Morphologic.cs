@@ -2,6 +2,11 @@
 
 namespace ZPO.Core
 {
+    /// <summary>
+    /// Source: Edited version from library WritableBitmapEx
+    /// Edit: Alpha channel is not beeing computed
+    /// Url: https://github.com/teichgraf/WriteableBitmapEx/
+    /// </summary>
     public static class Morphology
     {
         public enum MorphologyType

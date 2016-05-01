@@ -10,41 +10,21 @@ namespace ZPO.Core
 {
     public static class WriteableExtensions
     {
-        public static WriteableBitmap Add(this WriteableBitmap bmp1, WriteableBitmap bmp2)
-        {
-            if (bmp1.PixelHeight != bmp2.PixelHeight || bmp1.PixelWidth != bmp2.PixelWidth)
-            {
-                throw new ArgumentException("Bitmaps have to have same dimension", nameof(bmp2));
-            }
-
-            using (var srcContext1 = bmp1.GetBitmapContext(ReadWriteMode.ReadOnly))
-            using (var srcContext2 = bmp2.GetBitmapContext(ReadWriteMode.ReadOnly))
-            {
-                var w = srcContext1.Width;
-                var h = srcContext1.Height;
-                var result = BitmapFactory.New(w, h);
-
-                using (var resultContext = result.GetBitmapContext())
-                {
-                    for (var index = 0; index < h * w; index++)
-                    {
-                        // ToDo: remove it or repair it
-                        //var sumColor = new RGBColor(srcContext1.Pixels[index]).Add(new RGBColor(srcContext2.Pixels[index]));
-                        //resultContext.Pixels[index] = sumColor.ToInt();
-                    }
-                }
-
-                return result;
-            }
-        }
-
+        /// <summary>
+        /// Remove alpha information from bitmap bcs is used in algorithms
+        /// </summary>
+        /// <param name="bmp"></param>
         public static void RemoveAlphaChannel(this WriteableBitmap bmp)
         {
             bmp.ForEach((x, y, c) => Windows.UI.Color.FromArgb(255, c.R, c.G, c.B));
         }
 
-        // Source: Edited version from library WritableBitmapEx
-        // Edit: Alpha channel is not beeing computed and result color is retrieved from absolute values
+
+        /// <summary>
+        /// Source: Edited version from library WritableBitmapEx
+        /// Edit: Alpha channel is not beeing computed and result color is retrieved from absolute values
+        /// Url: https://github.com/teichgraf/WriteableBitmapEx/
+        /// </summary>
         public static WriteableBitmap MyConvolute(this WriteableBitmap bmp, int[,] kernel, int kernelFactorSum)
         {
             var kh = kernel.GetUpperBound(0) + 1;

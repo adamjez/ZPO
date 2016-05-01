@@ -3,6 +3,9 @@ using System.Collections.ObjectModel;
 
 namespace ZPO.App.Extensions
 {
+    /// <summary>
+    /// Simulates observable queue with limited count of items 
+    /// </summary>
     public class ObservableQueue<T> : ObservableCollection<T>
     {
         private readonly int _capacity;

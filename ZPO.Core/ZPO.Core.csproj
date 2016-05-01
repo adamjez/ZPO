@@ -127,14 +127,14 @@
     <Compile Include="Colors\ColorSpaces.cs" />
     <Compile Include="Conditions\BaseCondition.cs" />
     <Compile Include="Conditions\ColorCondition.cs" />
-    <Compile Include="Conditions\ColorsCondition.cs" />
+    <Compile Include="Conditions\ArithmeticalDistanceCondition.cs" />
     <Compile Include="Conditions\CreateModelException.cs" />
     <Compile Include="Conditions\GaussianColorCondition.cs" />
-    <Compile Include="Conditions\GaussianColorsCondition.cs" />
+    <Compile Include="Conditions\GaussianCondition.cs" />
     <Compile Include="Conditions\IColorCondition.cs" />
     <Compile Include="IEnumerableExtensions.cs" />
     <Compile Include="ImageBlur.cs" />
-    <Compile Include="ImageEdgeDetection.cs" />
+    <Compile Include="ImageProcessing.cs" />
     <Compile Include="Colors\RGBColor.cs" />
     <Compile Include="Morphologic.cs" />
     <Compile Include="NeighboursType.cs" />
