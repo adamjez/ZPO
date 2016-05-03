@@ -106,8 +106,8 @@ namespace ZPO.App.ViewModels
             get { return selectedColorSpace; }
             set
             {
-                CheckRestrictions();
                 SetProperty(ref selectedColorSpace, value);
+                CheckRestrictions();
             }
         }
 
@@ -121,8 +121,8 @@ namespace ZPO.App.ViewModels
             get { return selectedCondition; }
             set
             {
-                CheckRestrictions();
                 SetProperty(ref selectedCondition, value);
+                CheckRestrictions();
             }
         }
 
@@ -178,14 +178,13 @@ namespace ZPO.App.ViewModels
         /// </summary>
         private void CheckRestrictions()
         {
-            if (SelectedCondition == ConditionType.NormalDistributionFromColor)
+            if (selectedCondition == ConditionType.NormalDistributionFromColor)
             {
-                if (SelectedColorSpace != Core.Colors.ColorSpaces.RGB ||
-                    SelectedColorSpace != Core.Colors.ColorSpaces.GrayScale)
+                ResultMessage = string.Empty;
+                if (selectedColorSpace != Core.Colors.ColorSpaces.RGB &&
+                    selectedColorSpace != Core.Colors.ColorSpaces.GrayScale)
                 {
-                    // Have to set direct to private field to not to get stackoverflow exception
-                    // It's fallback value to not allow unsupported color space with given condition
-                    selectedColorSpace = Core.Colors.ColorSpaces.GrayScale;
+                    ResultMessage = "Unsupported combination";
                 }
             }
         }

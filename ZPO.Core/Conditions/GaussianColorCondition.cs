@@ -1,6 +1,7 @@
 using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Runtime.CompilerServices;
 using Windows.UI.Xaml.Media.Imaging;
 using MathNet.Numerics.LinearAlgebra;
 using ZPO.Core.Colors;
@@ -24,14 +25,8 @@ namespace ZPO.Core.Conditions
         private double baseThreshold;
         private readonly int partsCount;
 
-        // 1D normal distribution
-        private double mean;
-        private double deviation;
-
-        // 3D Multivariate normal distribution
         private Vector<double> meanVector;
-        private Matrix<double> covarianceMatrix;
-        private double preComputedA;
+        private Vector<double> deviationVector;
 
         public GaussianColorCondition(IColor compareColor, double tolerance, double neighborTolerance,
             WriteableBitmap image, ColorCreator colorCreator, bool dynamicThreshold = false)
@@ -39,11 +34,7 @@ namespace ZPO.Core.Conditions
         {
             partsCount = compareColor.GetParts().Count;
 
-            if (partsCount == 1)
-            {
-                MakeHistogramFromGrayScale(image, colorCreator);
-            }
-            else if (partsCount == 3 && compareColor is RGBColor)
+            if (compareColor is RGBColor || compareColor is GrayScaleColor)
             {
                 MakeHistogram(image, colorCreator);
             }
@@ -52,37 +43,10 @@ namespace ZPO.Core.Conditions
                 throw new CreateModelException("Color Space isn't supported");
             }
         }
-
-        private void MakeHistogramFromGrayScale(WriteableBitmap image, ColorCreator colorCreator)
-        {
-            var histogram = CreateVector.Dense<double>(256);
-            using (var srcContext = image.GetBitmapContext(ReadWriteMode.ReadOnly))
-            {
-                for (int y = 0; y < image.PixelHeight; y++)
-                {
-                    for (int x = 0; x < image.PixelWidth; x++)
-                    {
-                        var value = srcContext.Pixels[y * image.PixelWidth + x];
-                        var parts = colorCreator.Create(value).GetParts();
-
-                        histogram[(int)parts[0]]++;
-                    }
-                }
-            }
-
-            // Find local maximum and local minimum from compare color position
-            var result = GetMeanAndDeviation(histogram, (int)Color.GetParts()[0]);
-
-            mean = result.Item1;
-            deviation = result.Item2;
-            baseThreshold = GaussianFunction1D(result.Item2);
-            threshold = baseThreshold * Math.Pow(2, -Tolerance);
-            neighborThreshold = threshold * Math.Pow(2, -NeighborTolerance);
-        }
-
+        
         private void MakeHistogram(WriteableBitmap image, ColorCreator colorCreator)
         {
-            var histogram = CreateMatrix.Dense<double>(256, 3);
+            var histogram = CreateMatrix.Dense<double>(256, partsCount);
             using (var srcContext = image.GetBitmapContext(ReadWriteMode.ReadOnly))
             {
                 for (int y = 0; y < image.PixelHeight; y++)
@@ -92,36 +56,27 @@ namespace ZPO.Core.Conditions
                         var value = srcContext.Pixels[y * image.PixelWidth + x];
                         var parts = colorCreator.Create(value).GetParts();
 
-                        histogram[(int)parts[0], 0]++;
-                        histogram[(int)parts[1], 1]++;
-                        histogram[(int)parts[2], 2]++;
+                        for (int index = 0; index < parts.Count; index++)
+                        {
+                            histogram[(int)parts[index], index]++;
+                        }
                     }
                 }
             }
 
+            meanVector = CreateVector.Dense<double>(partsCount);
+            deviationVector = CreateVector.Dense<double>(partsCount);
             // Find local maximum and local minimum from compare color position
-            var result1 = GetMeanAndDeviation(histogram.Column(0), (int)Color.GetParts()[0]);
-            var result2 = GetMeanAndDeviation(histogram.Column(1), (int)Color.GetParts()[1]);
-            var result3 = GetMeanAndDeviation(histogram.Column(2), (int)Color.GetParts()[2]);
-
-            meanVector = CreateVector.DenseOfArray(new[] { result1.Item1, result2.Item1, result3.Item1 });
-            covarianceMatrix = CreateMatrix.DenseOfDiagonalArray(
-                new[]
-                {
-                    Math.Pow(result1.Item2, 2),
-                    Math.Pow(result2.Item2, 2),
-                    Math.Pow(result3.Item2, 2)
-                });
-
-
-            preComputedA = 1 / Math.Sqrt(covarianceMatrix.Determinant() * Math.Pow(2 * Math.PI, 3));
-
-            var minimumVector = CreateVector.DenseOfArray(new[]
+            for (int index = 0; index < partsCount; index++)
             {
-                result1.Item2, result2.Item2, result3.Item2
-            });
+                var result = GetMeanAndDeviation(histogram.Column(index), 
+                    (int)Color.GetParts()[index]);
 
-            baseThreshold = GaussianFunction(minimumVector);
+                meanVector[index] = result.Item1;
+                deviationVector[index] = result.Item2;
+            }
+
+            baseThreshold = GaussianFunction(meanVector - deviationVector);
             threshold = baseThreshold * Math.Pow(2, -Tolerance);
             neighborThreshold = threshold * Math.Pow(2, -NeighborTolerance);
         }
@@ -204,15 +159,7 @@ namespace ZPO.Core.Conditions
 
         public override bool Compare(IColor pixelColor, int neighborCount, double rowRatio = -1)
         {
-            var result = 0.0;
-            if (partsCount == 1)
-            {
-                result = GaussianFunction1D(pixelColor.GetParts()[0]);
-            }
-            else
-            {
-                result = GaussianFunction(pixelColor.GetParts());
-            }
+            var result = GaussianFunction(pixelColor.GetParts());
 
             var currentThreshold = 0.0;
             if (DynamicThreshold)
@@ -228,25 +175,26 @@ namespace ZPO.Core.Conditions
                 currentThreshold = neighborCount > 0 ? neighborThreshold : threshold;
             }
 
-
             return result >= currentThreshold;
-        }
-
-        private double GaussianFunction1D(double value)
-        {
-            var result = (1 / (deviation * Math.Sqrt(2 * Math.PI))) *
-                Math.Exp(-Math.Pow(value - mean, 2) / (2 * Math.Pow(deviation, 2)));
-
-            return result;
         }
 
         private double GaussianFunction(Vector<double> value)
         {
-            var centeredValues = value - meanVector;
-            var b = -1.0 / 2.0 * centeredValues.ToRowMatrix() * covarianceMatrix.Inverse() * centeredValues;
+            var result = 1.0;
+            for (int index = 0; index < value.Count; index++)
+            {
+                result *= GaussianDistribution(value[index], 
+                    meanVector[index], deviationVector[index]);
+            }
 
-            return preComputedA * Math.Exp(b[0]);
+            return result;
         }
 
+        [MethodImpl(MethodImplOptions.AggressiveInlining)]
+        private double GaussianDistribution(double value, double mean, double deviation)
+        {
+            return (1 / (deviation * Math.Sqrt(2 * Math.PI))) *
+                Math.Exp(-Math.Pow(value - mean, 2) / (2 * Math.Pow(deviation, 2)));
+        }
     }
 }
